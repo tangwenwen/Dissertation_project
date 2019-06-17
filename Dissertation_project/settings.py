@@ -77,7 +77,7 @@ WSGI_APPLICATION = 'Dissertation_project.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'homework',   #数据库名
+        'NAME': 'dissertation',   #数据库名
         'USER' :'root',
         'PASSWORD' :'123456',
         'HOST' : 'localhost',
