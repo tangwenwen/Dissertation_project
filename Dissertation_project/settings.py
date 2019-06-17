@@ -72,7 +72,7 @@ WSGI_APPLICATION = 'Dissertation_project.wsgi.application'
 
 
 # Database
-# https://docs.djangoproject.com/en/2.2/ref/settings/#databases
+# https://docs.djangoproject.com/en/2.2/ref/settings/#database
 
 DATABASES = {
     'default': {
