@@ -17,3 +17,17 @@ import os
 # 主页后台代码
 def index(request):
     return render(request,'index.html')
+
+#注册用户后台代码
+def register(request):
+    return render(request,'register.html')
+
+
+#登录用户后台代码
+def login(request):
+    return render(request,'login.html')
+
+
+#忘记密码后台代码
+def forgot_password(request):
+    return render(request,'forgot-password.html')

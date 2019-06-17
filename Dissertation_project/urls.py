@@ -20,5 +20,8 @@ from app import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.index),
+    path('register/', views.register),
+    path('login/', views.login),
+    path('forgot-password/', views.forgot_password),
 
 ]
