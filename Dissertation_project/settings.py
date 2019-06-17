@@ -25,7 +25,7 @@ SECRET_KEY = 'uyr)p4y#1)p)&yg3e%a!%lfcb2za2(s&(m%hiy9^0hac7d65pe'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'app',
 ]
 
 MIDDLEWARE = [
@@ -54,8 +55,7 @@ ROOT_URLCONF = 'Dissertation_project.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')]
-        ,
+        'DIRS': [os.path.join(BASE_DIR, 'templates')] ,
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -76,8 +76,12 @@ WSGI_APPLICATION = 'Dissertation_project.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'homework',
+        'USER' :'root',
+        'PASSWORD' :'123456',
+        'HOST' : 'localhost',
+        'PORT' : '3306',
     }
 }
 
@@ -107,15 +111,19 @@ AUTH_PASSWORD_VALIDATORS = [
 LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'UTC'
-
+TIME_ZONE = 'Asia/Shanghai'
 USE_I18N = True
 
 USE_L10N = True
 
 USE_TZ = True
-
-
+#session 存活时间 30分钟
+SESSION_COOKIE_AGE = 60*30
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
+
 STATIC_URL = '/static/'
+STATICFILES_DIRS = (
+	os.path.join(BASE_DIR,'static'),
+	)
