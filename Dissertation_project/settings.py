@@ -73,11 +73,11 @@ WSGI_APPLICATION = 'Dissertation_project.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#database
-
+#连接数据库
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'homework',
+        'NAME': 'homework',   #数据库名
         'USER' :'root',
         'PASSWORD' :'123456',
         'HOST' : 'localhost',
