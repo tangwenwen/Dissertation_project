@@ -7,63 +7,77 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="description" content="">
   <meta name="author" content="">
-  <title>SB Admin</title>
+  <title>注册账号</title>
   <!-- Bootstrap core CSS-->
-  <link href="./static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
   <!-- Custom fonts for this template-->
-  <link href="./static/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+  <link href="../static/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
   <!-- Custom styles for this template-->
-  <link href="./static/css/sb-admin.css" rel="stylesheet">
+  <link href="../static/css/sb-admin.css" rel="stylesheet">
 </head>
 
 <body class="bg-dark">
   <div class="container">
     <div class="card card-register mx-auto mt-5">
-      <div class="card-header">Register an Account</div>
+      <div class="card-header">注册账号</div>
       <div class="card-body">
-        <form>
+        <form  action="/register/"   method="POST">{% csrf_token %}
           <div class="form-group">
             <div class="form-row">
               <div class="col-md-6">
-                <label for="exampleInputName">First name</label>
-                <input class="form-control" id="exampleInputName" type="text" aria-describedby="nameHelp" placeholder="Enter first name">
+                <label for="exampleInputName">名</label>
+                <input class="form-control" id="exampleInputName" name="firstname" type="text" aria-describedby="nameHelp" placeholder="输入名">
               </div>
               <div class="col-md-6">
-                <label for="exampleInputLastName">Last name</label>
-                <input class="form-control" id="exampleInputLastName" type="text" aria-describedby="nameHelp" placeholder="Enter last name">
+                <label for="exampleInputLastName">姓</label>
+                <input class="form-control" id="exampleInputLastName" name="lastname" type="text" aria-describedby="nameHelp" placeholder="输入姓">
               </div>
             </div>
           </div>
           <div class="form-group">
-            <label for="exampleInputEmail1">Email address</label>
-            <input class="form-control" id="exampleInputEmail1" type="email" aria-describedby="emailHelp" placeholder="Enter email">
+            <label for="exampleInputEmail1">邮箱地址</label>
+            <input class="form-control" id="exampleInputEmail1" name="email" type="email" aria-describedby="emailHelp" placeholder="输入邮箱">
           </div>
           <div class="form-group">
             <div class="form-row">
               <div class="col-md-6">
-                <label for="exampleInputPassword1">Password</label>
-                <input class="form-control" id="exampleInputPassword1" type="password" placeholder="Password">
+                <label for="exampleInputPassword1">密码</label>
+                <input class="form-control" id="exampleInputPassword1" name="password" type="password" placeholder="密码">
               </div>
               <div class="col-md-6">
-                <label for="exampleConfirmPassword">Confirm password</label>
-                <input class="form-control" id="exampleConfirmPassword" type="password" placeholder="Confirm password">
+                <label for="exampleConfirmPassword">确认密码</label>
+                <input class="form-control" id="exampleConfirmPassword" name="confirmpassword" type="password" placeholder="确认密码">
               </div>
             </div>
+              {%  for m in message %}
+                  {% ifequal m 'input_none'%}
+                      <p class="input_error" style="color: red;margin-left: 250px;margin-top: 10px; ">输入不能为空 </p>
+                  {% endifequal %}
+                  {% ifequal m 'confirm_error'%}
+                      <p class="input_error" style="color: red;margin-left: 250px;margin-top: 10px; ">两次密码不一致 </p>
+                  {% endifequal %}
+                  {% ifequal m 'email_exist'%}
+                      <p class="input_error" style="color: red;margin-left: 250px;margin-top: 10px; ">邮箱已注册 </p>
+                  {% endifequal %}
+                  {% ifequal m 'register_successful'%}
+                      <p class="input_error" style="color: red;margin-left: 250px;margin-top: 10px; ">注册成功！ </p>
+                  {% endifequal %}
+              {% endfor %}
           </div>
-          <a class="btn btn-primary btn-block" href="login.html">Register</a>
+          <input class="btn btn-primary btn-block" type="submit" placeholder="注册"input>
         </form>
         <div class="text-center">
-          <a class="d-block small mt-3" href="login.html">Login Page</a>
-          <a class="d-block small" href="forgot-password.html">Forgot Password?</a>
+          <a class="d-block small mt-3" href="../login/">跳转登录</a>
+          <a class="d-block small" href="/forgot_password/">忘记密码?</a>
         </div>
       </div>
     </div>
   </div>
   <!-- Bootstrap core JavaScript-->
-  <script src="./static/vendor/jquery/jquery.min.js"></script>
-  <script src="./static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="../static/vendor/jquery/jquery.min.js"></script>
+  <script src="../static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
   <!-- Core plugin JavaScript-->
-  <script src="./static/vendor/jquery-easing/jquery.easing.min.js"></script>
+  <script src="../static/vendor/jquery-easing/jquery.easing.min.js"></script>
 </body>
 
 </html>

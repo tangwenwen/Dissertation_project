@@ -15,13 +15,17 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from app import views
+from app import views,views_student,views_teacher
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.index),
-    path('register/', views.register),
-    path('login/', views.login),
-    path('forgot-password/', views.forgot_password),
+    path('', views.index),          #管理员主页路由
+    path('index_teachers/', views_teacher.index_teachers),          #老师端主页路由
+    path('index_students/', views_student.index_students),          #学生端主页路由
+    path('register/', views.register),   #注册路由
+    path('login/', views.login),       #登录路由
+    path('forgot_password/', views.forgot_password),        #忘记密码路由
+    path('logout/',views.logout),         #推出登录路由
 
 ]
