@@ -11,3 +11,7 @@ import os
 @check_login
 def index_students(request):
     return render(request,'index_students.html',{'username' : User_info.objects.filter(email=request.session.get('email'))[0].username})
+
+
+def upload_file(request):
+    pass
