@@ -35,6 +35,9 @@
               <label class="form-check-label">
                 <input class="form-check-input" type="checkbox"> 记住密码</label>
             </div>
+              {% ifequal message_error 'error_login'%}
+                      <p class="input_error" style="color: red;margin-left: 120px;margin-top: 10px; ">用户名或密码错误！ </p>
+                  {% endifequal %}
           </div>
           <input class="btn btn-primary btn-block" type="submit" placeholder="登录" ></input>
         </form>

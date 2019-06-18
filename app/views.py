@@ -40,10 +40,13 @@ def login(request):
             request.session['is_login'] = '1'  # session expriy = 60*10
             user_type = User[0].comment_type
             if user_type == 3:
+                request.session['email'] = email
                 return HttpResponseRedirect('/')                  #管理员主页
             elif user_type == 2:
+                request.session['email'] = email
                 return HttpResponseRedirect('/index_teachers')             #老师主页
             else :
+                request.session['email'] = email
                 return HttpResponseRedirect('/index_students')              #学生主页
 
         else:
@@ -63,8 +66,7 @@ def index(request):
     email = request.session.get('email')
     Userobj = User_info.objects.filter(email=email)
     if Userobj:
-
-        return render(request,'index.html')
+        return render(request, 'index.html',{'username': User_info.objects.filter(email=request.session.get('email'))[0].username})
     else:
         return render(request, 'index.html')
 
@@ -98,6 +100,7 @@ def register(request):
 
 #忘记密码后台代码
 def forgot_password(request):
+    message = []
     if request.method =="POST":
         email = request.POST.get('email')
         my_sender = '497159777@qq.com'
@@ -115,6 +118,9 @@ def forgot_password(request):
             server.quit()  # 关闭连接
         except Exception:
             ret = False
-
+        if ret:
+            return render(request, 'forgot_password.html', {"message": 'successful'})
+        else:
+            return render(request, 'forgot_password.html', {"message": 'unsuccessful'})
 
     return render(request,'forgot_password.html')

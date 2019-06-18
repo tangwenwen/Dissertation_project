@@ -21,7 +21,7 @@
 <body class="fixed-nav sticky-footer bg-dark" id="page-top">
   <!-- Navigation-->
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
-    <a class="navbar-brand" href="index.html">Start Bootstrap</a>
+    <a class="navbar-brand" href="index.html">欢迎您 {{   username  }}同学</a>
     <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -202,21 +202,10 @@
             <a class="dropdown-item small" href="#">View all alerts</a>
           </div>
         </li>
-        <li class="nav-item">
-          <form class="form-inline my-2 my-lg-0 mr-lg-2">
-            <div class="input-group">
-              <input class="form-control" type="text" placeholder="Search for...">
-              <span class="input-group-btn">
-                <button class="btn btn-primary" type="button">
-                  <i class="fa fa-search"></i>
-                </button>
-              </span>
-            </div>
-          </form>
-        </li>
+
         <li class="nav-item">
           <a class="nav-link" data-toggle="modal" data-target="#exampleModal">
-            <i class="fa fa-fw fa-sign-out"></i>Logout</a>
+            <i class="fa fa-fw fa-sign-out"></i>退出登录</a>
         </li>
       </ul>
     </div>
@@ -1081,7 +1070,7 @@
     <footer class="sticky-footer">
       <div class="container">
         <div class="text-center">
-          <small>Copyright &copy; 2019.Company name All rights reserved.<a target="_blank" href="http://sc.chinaz.com/moban/">&#x7F51;&#x9875;&#x6A21;&#x677F;</a></small>
+          <small>Copyright &copy; 2019.Company name All rights reserved.<a target="_blank" href="/">第二组</a></small>
         </div>
       </div>
     </footer>
@@ -1094,15 +1083,15 @@
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+            <h5 class="modal-title" id="exampleModalLabel">是否离开?</h5>
             <button class="close" type="button" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">×</span>
             </button>
           </div>
-          <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+          <div class="modal-body">选择 "退出登录" 则退出登录至登录界面.</div>
           <div class="modal-footer">
-            <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-            <a class="btn btn-primary" href="../login">Logout</a>
+            <button class="btn btn-secondary" type="button" data-dismiss="modal">取消</button>
+            <a class="btn btn-primary" href="../logout">退出登录</a>
           </div>
         </div>
       </div>
