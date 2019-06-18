@@ -3,7 +3,7 @@ from django.shortcuts import render
 # Create your views here.
 
 
-
+from django.contrib.auth.hashers import make_password,check_password
 from django.shortcuts import render
 from django.shortcuts import redirect
 from django.http import HttpResponse
@@ -35,20 +35,23 @@ def login(request):
     if request.method == 'POST':
         email = request.POST.get('email')
         password = request.POST.get('password')
-        User = User_info.objects.filter(email=email,password=password)
+        User = User_info.objects.filter(email=email)
         if User:
-            request.session['is_login'] = '1'  # session expriy = 60*10
-            user_type = User[0].comment_type
-            if user_type == 3:
-                request.session['email'] = email
-                return HttpResponseRedirect('/')                  #管理员主页
-            elif user_type == 2:
-                request.session['email'] = email
-                return HttpResponseRedirect('/index_teachers')             #老师主页
+            checkPassword = User[0].password
+            if check_password(password,checkPassword):
+                request.session['is_login'] = '1'  # session expriy = 60*10
+                user_type = User[0].comment_type
+                if user_type == 3:
+                    request.session['email'] = email
+                    return HttpResponseRedirect('/')                  #管理员主页
+                elif user_type == 2:
+                    request.session['email'] = email
+                    return HttpResponseRedirect('/index_teachers')             #老师主页
+                else :
+                    request.session['email'] = email
+                    return HttpResponseRedirect('/index_students')              #学生主页
             else :
-                request.session['email'] = email
-                return HttpResponseRedirect('/index_students')              #学生主页
-
+                return render(request, 'login.html', {"message_error": message_error})
         else:
             return render(request, 'login.html', {"message_error": message_error})
 
@@ -87,7 +90,7 @@ def register(request):
         if User_info.objects.filter(email=email) :
             message.append('email_exist')
         if not message:
-            User = User_info(username=username,password=password,email=email)
+            User = User_info(username=username,password=make_password(password),email=email)
             User.save()
             message.append('register_successful')
         else:
