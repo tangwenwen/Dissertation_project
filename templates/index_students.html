@@ -533,7 +533,7 @@
       <div class="card mb-3" id ="table">
         <div class="card-header">
           <i class="fa fa-table"></i> 所有已上传的论文</div>
-          <div style=" z-index:2">
+          <div style=" z-index:1">
           <form  action="/upload_file/" method="post" enctype="multipart/form-data">
       		{% csrf_token %}<br>
     		<input type="file" class="form-control" style="width: 18%; margin-left: 300px;" name="file" />
@@ -557,12 +557,12 @@
               <tbody>
                 {%  for student_file in student_files  %}
                 <tr>
-                  <td>{{ student_file.proname }}</td>
+                  <td>{{ student_file.project_name }}</td>
                   <td>{{ student_file.student_file_name }}</td>
-                  <td>{{ student_file.student_file_name }}</td>
+                  <td>{{ student_file.project_teacher }}</td>
                   <td>{{ student_file.student_upload_time }}</td>
-                  <td><a href="{% url 'download_file' student_file.email.email student_file.student_file_name  %}">download</a></td>
-				   <td><a href="{% url 'delete_file' student_file.email.email student_file.student_file_name  %}">delete</a></td>
+                  <td><a href="{% url 'download_file' email.email student_file.student_file_name  %}">download</a></td>
+				   <td><a href="{% url 'delete_file' email.email student_file.student_file_name  %}">delete</a></td>
                     <td>{{ student_file.student_file_size }}bit</td>
                     {% ifequal student_file.student_file_flag 1 %}
                     <td>未查阅</td>

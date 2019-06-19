@@ -4,21 +4,30 @@ from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from django.http import StreamingHttpResponse
 
-from app.models import User_info,student_file,project,Student_info
+from app.models import User_info,student_file,project,Student_info,Teacher_info
 from app.views import check_login
 import os
+from django.db.models import Q
 from itertools import chain
 
 @check_login
 def index_students(request):
-    student_file_obj = student_file.objects.filter(email=User_info.objects.get(email=request.session.get('email')))
+    student_file_obj = student_file.objects.filter(email=User_info.objects.get(email=request.session.get('email'))).values()
     student_info_obj = Student_info.objects.filter(student=User_info.objects.get(email=request.session.get('email')))
-    project_obj = project.objects.filter(id =int(student_info_obj[0].project_id))
-    objs = chain(student_file_obj[0],project_obj[0])
-    print('------',objs)
+    project_obj = project.objects.filter(id=int(student_info_obj[0].project_id))
+    student_file_obj_list = list(student_file_obj)
+    for i in (student_file_obj_list):
+        i['project_name'] = project.objects.filter(id=int(student_info_obj[0].project_id))[0].project_name
+        i['project_teacher'] =Teacher_info.objects.filter(Q(project_1=project.objects.filter(id=int(student_info_obj[0].project_id))[0].id)
+                                                          |Q(project_2=project.objects.filter(id=int(student_info_obj[0].project_id))[0].id)
+                                                          |Q(project_3=project.objects.filter(id=int(student_info_obj[0].project_id))[0].id)
+                                                    )[0].teacher_name
+
+    print(student_file_obj_list)
     if request.method =='GET':
         return render(request,'index_students.html',{'username' : User_info.objects.filter(email=request.session.get('email'))[0].username,
-                                                     'student_files':objs,
+                                                     'student_files':student_file_obj_list,
+                                                     'email':User_info.objects.get(email=request.session.get('email')),
                                                      })
 
 
