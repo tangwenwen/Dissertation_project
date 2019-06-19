@@ -11,4 +11,6 @@ class User_info(models.Model):
     user_choices = ((1,u'学生'),(2,u"老师"),(3,u"管理员"))
     comment_type = models.IntegerField(choices=user_choices, default=1, verbose_name=u"用户类型")
 
-
+#学生文件表
+class student_file(models.Model):
+    pass
