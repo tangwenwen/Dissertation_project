@@ -27,6 +27,7 @@ urlpatterns = [
     path('login/', views.login),       #登录路由
     path('forgot_password/', views.forgot_password),        #忘记密码路由
     path('logout/',views.logout),         #推出登录路由
-    path('upload_file/',views_student.upload_file)
-
+    path('upload_file/',views_student.upload_file),
+    path('download_file/<str:email>/<str:student_file_name>/' ,views_student.download_file,name="download_file"),
+    path('delete_file/<str:email>/<str:student_file_name>/' ,views_student.delete_file,name="delete_file"),
 ]

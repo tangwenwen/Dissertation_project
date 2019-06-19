@@ -11,7 +11,7 @@ from django.http import HttpResponseRedirect
 from django.http import StreamingHttpResponse
 
 from functools import wraps
-from app.models import User_info
+from app.models import User_info,Student_info
 import smtplib
 from email.mime.text import MIMEText
 from email.utils import formataddr
@@ -92,6 +92,8 @@ def register(request):
         if not message:
             User = User_info(username=username,password=make_password(password),email=email)
             User.save()
+            student = Student_info(student=User)
+            student.save()
             message.append('register_successful')
         else:
             return render(request, 'register.html', {"message": message})
@@ -103,7 +105,7 @@ def register(request):
 
 #忘记密码后台代码
 def forgot_password(request):
-    message = []
+
     if request.method =="POST":
         email = request.POST.get('email')
         my_sender = '497159777@qq.com'
