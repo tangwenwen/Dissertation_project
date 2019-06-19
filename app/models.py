@@ -13,4 +13,17 @@ class User_info(models.Model):
 
 #学生文件表
 class student_file(models.Model):
+    email = models.ForeignKey('User_info',on_delete=models.CASCADE, verbose_name=u"邮箱")
+    student_file_name = models.CharField(max_length=250, verbose_name=u"学生文件名")
+    student_file_size = models.CharField(max_length=30, verbose_name=u"学生文件大小")
+    student_upload_time = models.DateTimeField(auto_now=True, verbose_name=u"学生上传时间")
+    student_upload_add = models.CharField(max_length=250, verbose_name=u"学生文件地址", default='')
+
+#消息表
+class student_message(models.Model):
+    pass
+
+
+#问题表
+class student_question(models.Model):
     pass
