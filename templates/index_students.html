@@ -555,16 +555,20 @@
                 </tr>
               </thead>
               <tbody>
-                {%  for student_file in student_files %}
+                {%  for student_file in student_files  %}
                 <tr>
-                  <td>{{ student_file.student_file_name }}</td>
+                  <td>{{ student_file.proname }}</td>
                   <td>{{ student_file.student_file_name }}</td>
                   <td>{{ student_file.student_file_name }}</td>
                   <td>{{ student_file.student_upload_time }}</td>
                   <td><a href="{% url 'download_file' student_file.email.email student_file.student_file_name  %}">download</a></td>
 				   <td><a href="{% url 'delete_file' student_file.email.email student_file.student_file_name  %}">delete</a></td>
                     <td>{{ student_file.student_file_size }}bit</td>
-                  <td>{{ student_file.student_file_name }}</td>
+                    {% ifequal student_file.student_file_flag 1 %}
+                    <td>未查阅</td>
+                    {% else %}
+                    <td>已查阅</td>
+                    {% endifequal %}
                 </tr>
               {% endfor %}
 

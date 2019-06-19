@@ -4,17 +4,22 @@ from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from django.http import StreamingHttpResponse
 
-from app.models import User_info,student_file
+from app.models import User_info,student_file,project,Student_info
 from app.views import check_login
 import os
+from itertools import chain
 
 @check_login
 def index_students(request):
     student_file_obj = student_file.objects.filter(email=User_info.objects.get(email=request.session.get('email')))
-    print(student_file_obj)
+    student_info_obj = Student_info.objects.filter(student=User_info.objects.get(email=request.session.get('email')))
+    project_obj = project.objects.filter(id =int(student_info_obj[0].project_id))
+    objs = chain(student_file_obj[0],project_obj[0])
+    print('------',objs)
     if request.method =='GET':
         return render(request,'index_students.html',{'username' : User_info.objects.filter(email=request.session.get('email'))[0].username,
-                                                     'student_files':student_file_obj})
+                                                     'student_files':objs,
+                                                     })
 
 
 #上传文件
@@ -24,7 +29,7 @@ def upload_file(request):
     if request.method == 'POST':
         file_obj = request.FILES.get('file')
         if file_obj is None:
-            return redirect('/index_students')
+            return redirect('/index_students/#table')
         else:
             isExists = os.path.exists('./app/temp_file/%s' % user_email)
             if not isExists:
