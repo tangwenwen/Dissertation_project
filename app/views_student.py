@@ -14,7 +14,7 @@ from itertools import chain
 def index_students(request):
     student_file_obj = student_file.objects.filter(email=User_info.objects.get(email=request.session.get('email'))).values()
     student_info_obj = Student_info.objects.filter(student=User_info.objects.get(email=request.session.get('email')))
-    project_obj = project.objects.filter(id=int(student_info_obj[0].project_id))
+    #project_obj = project.objects.filter(id=int(student_info_obj[0].project_id))
     student_file_obj_list = list(student_file_obj)
     for i in (student_file_obj_list):
         i['project_name'] = project.objects.filter(id=int(student_info_obj[0].project_id))[0].project_name
@@ -23,7 +23,7 @@ def index_students(request):
                                                           |Q(project_3=project.objects.filter(id=int(student_info_obj[0].project_id))[0].id)
                                                     )[0].teacher_name
 
-    print(student_file_obj_list)
+    #print(student_file_obj_list)
     if request.method =='GET':
         return render(request,'index_students.html',{'username' : User_info.objects.filter(email=request.session.get('email'))[0].username,
                                                      'student_files':student_file_obj_list,
