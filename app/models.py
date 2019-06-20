@@ -63,7 +63,10 @@ class message(models.Model):
     message_content = models.TextField(verbose_name=u"消息内容",default='')
     message_replyto = models.ForeignKey('self',related_name="子消息",blank=True,null=True,verbose_name=u"父消息",on_delete=models.CASCADE)
     message_upload_time = models.DateTimeField(auto_now=True, verbose_name=u"消息公告时间")
-    message_publisher = models.ForeignKey('User_info', on_delete=models.CASCADE, verbose_name=u"发布消息的人", default='')
+    message_publisher = models.ForeignKey('User_info', related_name='publisher', on_delete=models.CASCADE, verbose_name=u"发布消息的人",default='')
+    message_reservier = models.ForeignKey('User_info', related_name='reservier' , on_delete=models.CASCADE, verbose_name=u"接收消息的人",default='')
+    message_choices = ((1, u'未查看'), (2, u"已查看"))
+    message_flag = models.IntegerField(choices=message_choices, default=1, verbose_name=u"消息是否被查看")
     def __str__(self):
         return self.project.project_name
 
@@ -71,9 +74,10 @@ class message(models.Model):
 class broadcast(models.Model):
     manager = models.ForeignKey('Admin_info',on_delete=models.CASCADE, verbose_name=u"发布公告的管理员" ,default='')
     broadcast_upload_time = models.DateTimeField(auto_now=True, verbose_name=u"发布公告时间")
+    broadcast_title = models.CharField(max_length=250, verbose_name=u"公告标题",default='')
     broadcast_content = models.TextField(verbose_name=u"公告内容",default='')
     broadcast_choices = ((1, u'学生'), (2, u"老师"),(3, u"所有广播"))
-    broadcast_upload_to = models.IntegerField(choices=broadcast_choices, default=1, verbose_name=u"向何种用户发布")
+    broadcast_upload_to = models.IntegerField(choices=broadcast_choices, default=1, verbose_name=u"向何用户发布")
     def __str__(self):
         return self.manager.admin_name
 

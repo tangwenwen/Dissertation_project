@@ -91,24 +91,15 @@
           </a>
           <div class="dropdown-menu" aria-labelledby="messagesDropdown">
             <h6 class="dropdown-header">最近消息</h6>
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item" >
-              <strong>David Miller</strong>
-              <span class="small float-right text-muted">11:21 AM</span>
-              <div class="dropdown-message small">Hey there! This new version of SB Admin is pretty awesome! These messages clip off when they reach the end of the box so they don't overflow over to the sides!</div>
-            </a>
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item" >
-              <strong>Jane Smith</strong>
-              <span class="small float-right text-muted">11:21 AM</span>
-              <div class="dropdown-message small">I was wondering if you could meet for an appointment at 3:00 instead of 4:00. Thanks!</div>
-            </a>
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item" >
-              <strong>John Doe</strong>
-              <span class="small float-right text-muted">11:21 AM</span>
-              <div class="dropdown-message small">I've sent the final files over to you for review. When you're able to sign off of them let me know and we can discuss distribution.</div>
-            </a>
+            {% for brief_message in brief_messages %}
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" >
+                    <strong> {{ brief_message.teacher }}</strong>
+                    <span class="small float-right text-muted">{{ brief_message.message_upload_time }}</span>
+                    <div class="dropdown-message small">{{ brief_message.message_content }}</div>
+                </a>
+            {% endfor %}
+
             <div class="dropdown-divider"></div>
             <a class="dropdown-item small" href="#">查看所有消息</a>
           </div>
@@ -125,37 +116,22 @@
           </a>
           <div class="dropdown-menu" aria-labelledby="alertsDropdown">
             <h6 class="dropdown-header">系统消息:</h6>
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="#">
-              <span class="text-success">
-                <strong>
-                  <i class="fa fa-long-arrow-up fa-fw"></i>Status Update</strong>
-              </span>
-              <span class="small float-right text-muted">11:21 AM</span>
-              <div class="dropdown-message small">This is an automated server response message. All systems are online.</div>
-            </a>
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="#">
-              <span class="text-danger">
-                <strong>
-                  <i class="fa fa-long-arrow-down fa-fw"></i>Status Update</strong>
-              </span>
-              <span class="small float-right text-muted">11:21 AM</span>
-              <div class="dropdown-message small">This is an automated server response message. All systems are online.</div>
-            </a>
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="#">
-              <span class="text-success">
-                <strong>
-                  <i class="fa fa-long-arrow-up fa-fw"></i>Status Update</strong>
-              </span>
-              <span class="small float-right text-muted">11:21 AM</span>
-              <div class="dropdown-message small">This is an automated server response message. All systems are online.</div>
-            </a>
+              {% for brief_broadcast in brief_broadcasts %}
+                  <div class="dropdown-divider"></div>
+                  <a class="dropdown-item" href="#">
+                      <span class="text-success">
+                          <strong>
+                              <i class="fa fa-bell-o"></i>{{ brief_broadcast.broadcast_title }}</strong>
+                      </span>
+                      <span class="small float-right text-muted">{{ brief_broadcast.broadcast_upload_time }}</span>
+                      <div class="dropdown-message small">{{brief_broadcast.broadcast_content}}.</div>
+                  </a>
+              {% endfor %}
             <div class="dropdown-divider"></div>
             <a class="dropdown-item small" href="#">查看所有系统消息</a>
           </div>
         </li>
+
 &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
           &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
         <li class="nav-item">
@@ -169,77 +145,45 @@
     <div class="container-fluid">
       <!-- Breadcrumbs-->
       <ol class="breadcrumb">
-        <li class="breadcrumb-item">
-          <a href="#">Dashboard</a>
-        </li>
-        <li class="breadcrumb-item active">My Dashboard</li>
+        <i class="fa fa-fw fa-align-justify" style="margin-top: 5px"></i>&nbsp
+        <li class="breadcrumb-item active">我的消息面板</li>
       </ol>
       <!-- Icon Cards-->
       <div class="row">
-        <div class="col-xl-3 col-sm-6 mb-3">
+        <div class="col-xl-6 col-sm-6 mb-6">
           <div class="card text-white bg-primary o-hidden h-100">
             <div class="card-body">
               <div class="card-body-icon">
                 <i class="fa fa-fw fa-comments"></i>
               </div>
-              <div class="mr-5">26 New Messages!</div>
+              <div class="mr-5">当前共有{{ messagenum }}条消息，其中有未读消息{{ no_read_messagenum }}条</div>
             </div>
             <a class="card-footer text-white clearfix small z-1" href="#">
-              <span class="float-left">View Details</span>
+              <span class="float-left">查看详情！</span>
               <span class="float-right">
                 <i class="fa fa-angle-right"></i>
               </span>
             </a>
           </div>
         </div>
-        <div class="col-xl-3 col-sm-6 mb-3">
+        <div class="col-xl-6 col-sm-6 mb-6" style="float:right;">
           <div class="card text-white bg-warning o-hidden h-100">
             <div class="card-body">
               <div class="card-body-icon">
                 <i class="fa fa-fw fa-list"></i>
               </div>
-              <div class="mr-5">11 New Tasks!</div>
+              <div class="mr-5">您有{{ alertnum }}条系统公告，请查看！</div>
             </div>
             <a class="card-footer text-white clearfix small z-1" href="#">
-              <span class="float-left">View Details</span>
+              <span class="float-left">查看详情！</span>
               <span class="float-right">
                 <i class="fa fa-angle-right"></i>
               </span>
             </a>
           </div>
         </div>
-        <div class="col-xl-3 col-sm-6 mb-3">
-          <div class="card text-white bg-success o-hidden h-100">
-            <div class="card-body">
-              <div class="card-body-icon">
-                <i class="fa fa-fw fa-shopping-cart"></i>
-              </div>
-              <div class="mr-5">123 New Orders!</div>
-            </div>
-            <a class="card-footer text-white clearfix small z-1" href="#">
-              <span class="float-left">View Details</span>
-              <span class="float-right">
-                <i class="fa fa-angle-right"></i>
-              </span>
-            </a>
-          </div>
-        </div>
-        <div class="col-xl-3 col-sm-6 mb-3">
-          <div class="card text-white bg-danger o-hidden h-100">
-            <div class="card-body">
-              <div class="card-body-icon">
-                <i class="fa fa-fw fa-support"></i>
-              </div>
-              <div class="mr-5">13 New Tickets!</div>
-            </div>
-            <a class="card-footer text-white clearfix small z-1" href="#">
-              <span class="float-left">View Details</span>
-              <span class="float-right">
-                <i class="fa fa-angle-right"></i>
-              </span>
-            </a>
-          </div>
-        </div>
+
+
       </div>
       <!-- Area Chart Example-->
      <HR style="FILTER: alpha(opacity=100,finishopacity=0,style=2)" width="80%" color=#987cb9 SIZE=10 id ='myprofile'>
@@ -248,7 +192,7 @@
           <i class="fa fa-fw fa-child"></i> 个人资料</div>
         <div class="card-body">
             <ul class="nav nav-tabs">
-                <li class="active"><a href="#home" data-toggle="tab">个人管理</a></li>&nbsp&nbsp
+                <li class="active"><a href="#home" data-toggle="tab">个人管理</a></li>&nbsp/&nbsp
                 <li><a href="#profile" data-toggle="tab">密码管理</a></li>
             </ul>
 
@@ -279,7 +223,7 @@
                       </div>
                       <div class="form-group">
                           <label>邮箱</label>
-                          <input type="text" value="{{ profile.email }}" class="form-control" name = "email">
+                          <input type="text" value="{{ profile.email }}" class="form-control" name = "email" disabled="disabled">
                       </div>
 
                     </div>
@@ -335,7 +279,7 @@
 
 
         </div>
-        <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
+        <div class="card-footer small text-muted">最后一次更新在 {{ profile.time }}</div>
       </div>
 
 
@@ -628,8 +572,11 @@
           <form  action="/upload_file/" method="post" enctype="multipart/form-data">
       		{% csrf_token %}<br>
     		<input type="file" class="form-control" style="width: 18%; margin-left: 300px;" name="file" />
-    		<input type="submit" class="form-control"style="width: 18%; margin-left: 600px; margin-top: -42px;"value="提交"/>
+    		<input type="submit" class="form-control"style="width: 18%; margin-left: 600px; margin-top: -42px;"value="提交" onclick="alert1()"/>
           </form></div>
+      {% ifequal  no_project 'true'%}
+          alert("你好，我是一个警告框！");
+      {% endifequal %}
         <div class="card-body" style=" z-index:1">
           <div class="table-responsive">
             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
@@ -713,6 +660,7 @@
     var o = $(href).offset();
     $(window).scrollTop(o.top, 1000); //增加个动画效果
 });</script>
+
 
 
     <!-- Bootstrap core JavaScript-->
