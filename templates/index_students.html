@@ -63,7 +63,7 @@
           </a>
           <ul class="sidenav-second-level collapse" id="collapseComponents">
             <li>
-              <a href="navbar.html">我的资料</a>
+              <a href="#myprofile">我的资料</a>
             </li>
             <li>
               <a href="cards.html">退出登录</a>
@@ -242,14 +242,96 @@
         </div>
       </div>
       <!-- Area Chart Example-->
+     <HR style="FILTER: alpha(opacity=100,finishopacity=0,style=2)" width="80%" color=#987cb9 SIZE=10 id ='myprofile'>
       <div class="card mb-3">
-        <div class="card-header">
-          <i class="fa fa-area-chart"></i> Area Chart Example</div>
+        <div class="card-header" >
+          <i class="fa fa-fw fa-child"></i> 个人资料</div>
         <div class="card-body">
-          <canvas id="myAreaChart" width="100%" height="30"></canvas>
+            <ul class="nav nav-tabs">
+                <li class="active"><a href="#home" data-toggle="tab">个人管理</a></li>&nbsp&nbsp
+                <li><a href="#profile" data-toggle="tab">密码管理</a></li>
+            </ul>
+
+{#<div class="row">#}
+{#    <div class="col-md-4"><br>#}
+        <div id="myTabContent" class="tab-content">
+            <div class="tab-pane active in" id="home">
+                <div class="row">
+                    <div class="col-md-4"><br>
+                  <form id="tab">
+                      <div class="form-group">
+                          <label>用户名</label>
+                          <input type="text" value="jsmith" class="form-control">
+                      </div>
+                      <div class="form-group">
+                          <label>姓名</label>
+                          <input type="text" value="John" class="form-control">
+                      </div>
+                      <div class="form-group">
+                          <label>性别</label><br>
+                          <select style="width:100%;">
+                              <option>请选择</option>
+                              <option value = "1">男</option>
+                              <option value = "2">女</option>
+                          </select>
+                      </div>
+                      <div class="form-group">
+                          <label>邮箱</label>
+                          <input type="text" value="jsmith@yourcompany.com" class="form-control">
+                      </div>
+                  </form>
+                <div class="btn-toolbar list-toolbar">
+                    <button class="btn btn-primary"><i class="fa fa-save"></i> 保存</button>
+                </div>
+                    </div>
+                    <div class="col-md-6"><br>
+                        <div class="form-group">
+                          <label>学校</label>
+                          <input type="text" value="Smith" class="form-control">
+                      </div>
+                        <div class="form-group">
+                          <label>专业</label>
+                          <input type="text" value="Smith" class="form-control">
+                      </div>
+                        <div class="form-group">
+                          <label>班级</label>
+                          <input type="text" value="Smith" class="form-control">
+                      </div>
+                        <div class="form-group">
+                          <label>当前项目及指导老师</label>
+                          <input type="text" value="Smith" class="form-control">
+                      </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-pane fade" id="profile">
+                <div class="row">
+                    <div class="col-md-4"><br>
+                <form id="tab2">
+                    <div class="form-group">
+                        <label>新密码</label>
+                        <input type="password" class="form-control">
+                    </div>
+                </form>
+                <div class="btn-toolbar list-toolbar">
+                    <button class="btn btn-primary"><i class="fa fa-save"></i> 保存</button>
+                </div>
+                    </div></div>
+            </div>
+        </div>
+{#    </div>#}
+{#</div>#}
+
+
+
         </div>
         <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
       </div>
+
+
+
+
       <div class="row">
         <div class="col-lg-8">
           <!-- Example Bar Chart Card-->
@@ -539,7 +621,7 @@
     		<input type="file" class="form-control" style="width: 18%; margin-left: 300px;" name="file" />
     		<input type="submit" class="form-control"style="width: 18%; margin-left: 600px; margin-top: -42px;"value="提交"/>
           </form></div>
-        <div class="card-body" style="margin-top: -50px;">
+        <div class="card-body" style=" z-index:1">
           <div class="table-responsive">
             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
               <thead>
@@ -578,7 +660,12 @@
         </div>
         <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
       </div>
-    </div>
+    </div><br><br><br><br><br><br><br><br>
+
+
+
+
+
 
     <!-- /.content-wrapper-->
     <footer class="sticky-footer">
