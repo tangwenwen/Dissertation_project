@@ -53,13 +53,10 @@
           </a>
           <ul class="sidenav-second-level collapse" id="collapseComponents">
             <li>
-              <a href="">教师</a>
+              <a href="navbar.html">教师</a>
             </li>
             <li>
-              <a href="">学生</a>
-            </li>
-              <li>
-              <a href="#adduser">添加用户</a>
+              <a href="cards.html">学生</a>
             </li>
           </ul>
         </li>
@@ -548,71 +545,6 @@
         </div>
       </div>
       <!-- Example DataTables Card-->
-    <div class="card mb-3"
-    <div class="card card-register" id ="adduser">
-      <div class="card-header">添加用户</div>
-      <div class="card-body">
-        <form  action="/register/"   method="POST">{% csrf_token %}
-          <div class="form-group">
-            <div class="form-row">
-              <div class="col-md-6">
-                <label for="exampleInputName">名</label>
-                <input class="form-control" id="exampleInputName" name="firstname" type="text" aria-describedby="nameHelp" placeholder="输入名">
-              </div>
-              <div class="col-md-6">
-                <label for="exampleInputLastName">姓</label>
-                <input class="form-control" id="exampleInputLastName" name="lastname" type="text" aria-describedby="nameHelp" placeholder="输入姓">
-              </div>
-            </div>
-          </div>
-
-          <div class="form-group">
-              <div class="form-row">
-              <div class="col-md-6">
-            <label for="exampleInputEmail1">邮箱地址</label>
-            <input class="form-control" id="exampleInputEmail1" name="email" type="email" aria-describedby="emailHelp" placeholder="输入邮箱">
-              <label>角色</label><br>
-                          {% ifequal  profile.role 1 %}
-                              <input type="radio" name="role" value="teacher" checked=true name = "role"/> 教师<br />
-                              <input type="radio" name="role" value="student" name = "role"/> 学生<br />
-                              {% else %}
-                              <input type="radio" name="role" value="teacher" name = "role"/> 教师<br />
-                              <input type="radio" name="role" value="student" checked=true  name = "role"/> 学生<br />
-                          {% endifequal %}
-              </div>
-              </div>
-          </div>
-          <div class="form-group">
-            <div class="form-row">
-              <div class="col-md-6">
-                <label for="exampleInputPassword1">密码</label>
-                <input class="form-control" id="exampleInputPassword1" name="password" type="password" placeholder="密码">
-              </div>
-              <div class="col-md-6">
-                <label for="exampleConfirmPassword">确认密码</label>
-                <input class="form-control" id="exampleConfirmPassword" name="confirmpassword" type="password" placeholder="确认密码">
-              </div>
-            </div>
-              {%  for m in message %}
-                  {% ifequal m 'input_none'%}
-                      <p class="input_error" style="color: red;margin-left: 250px;margin-top: 10px; ">输入不能为空 </p>
-                  {% endifequal %}
-                  {% ifequal m 'confirm_error'%}
-                      <p class="input_error" style="color: red;margin-left: 250px;margin-top: 10px; ">两次密码不一致 </p>
-                  {% endifequal %}
-                  {% ifequal m 'email_exist'%}
-                      <p class="input_error" style="color: red;margin-left: 250px;margin-top: 10px; ">邮箱已注册 </p>
-                  {% endifequal %}
-                  {% ifequal m 'register_successful'%}
-                      <p class="input_error" style="color: red;margin-left: 250px;margin-top: 10px; ">注册成功！ </p>
-                  {% endifequal %}
-              {% endfor %}
-          </div>
-          <input class="btn btn-primary btn-block" type="submit" placeholder="注册"input>
-        </form>
-      </div>
-    </div>
-
 
     <!-- /.container-fluid-->
 
