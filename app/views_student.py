@@ -14,7 +14,6 @@ from itertools import chain
 def index_students(request):
     student_file_obj = student_file.objects.filter(email=User_info.objects.get(email=request.session.get('email'))).values()
     student_info_obj = Student_info.objects.filter(student=User_info.objects.get(email=request.session.get('email')))
-    project_obj = project.objects.filter(id=int(student_info_obj[0].project_id))
     student_file_obj_list = list(student_file_obj)
     for i in (student_file_obj_list):
         i['project_name'] = project.objects.filter(id=int(student_info_obj[0].project_id))[0].project_name
@@ -23,11 +22,33 @@ def index_students(request):
                                                           |Q(project_3=project.objects.filter(id=int(student_info_obj[0].project_id))[0].id)
                                                     )[0].teacher_name
 
-    print(student_file_obj_list)
+
+
+    #个人资料
+    profile = {}
+    profile['username']  = User_info.objects.get(email=request.session.get('email')).username
+    profile['email'] = request.session.get('email')
+    profile['name']  = Student_info.objects.filter(student=User_info.objects.get(email=request.session.get('email')))[0].student_name
+    profile['class'] = Student_info.objects.filter(student=User_info.objects.get(email=request.session.get('email')))[0].student_class
+    profile['school'] = Student_info.objects.filter(student=User_info.objects.get(email=request.session.get('email')))[0].student_school
+    profile['major'] = Student_info.objects.filter(student=User_info.objects.get(email=request.session.get('email')))[0].student_major
+    profile['sex'] = Student_info.objects.filter(student=User_info.objects.get(email=request.session.get('email')))[0].student_sex
+    if project.objects.filter(id = Student_info.objects.get(student=User_info.objects.get(email=request.session.get('email'))).project_id  ):
+        profile['project_name'] = project.objects.filter(
+            id=Student_info.objects.get(student=User_info.objects.get(email=request.session.get('email'))).project_id)[
+            0].project_name
+        profile['project_teacher'] =Teacher_info.objects.filter(Q(project_1=project.objects.filter(id=int(student_info_obj[0].project_id))[0].id)
+                                                          |Q(project_2=project.objects.filter(id=int(student_info_obj[0].project_id))[0].id)
+                                                          |Q(project_3=project.objects.filter(id=int(student_info_obj[0].project_id))[0].id)
+                                                    )[0].teacher_name
+    else:
+        profile['project_name'] = 'null'
+        profile['project_teacher'] = 'null'
     if request.method =='GET':
         return render(request,'index_students.html',{'username' : User_info.objects.filter(email=request.session.get('email'))[0].username,
                                                      'student_files':student_file_obj_list,
                                                      'email':User_info.objects.get(email=request.session.get('email')),
+                                                     'profile' :profile,
                                                      })
 
 
@@ -72,3 +93,25 @@ def delete_file(request,email,student_file_name):
     path = os.path.join('app', 'temp_file', email, student_file_name)
     os.remove(path)
     return redirect('/index_students/#table')
+
+#更改个人资料
+def alter_personal_info(request,email):
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        name = request.POST.get('name')
+        usernmae = request.POST.get('usernmae')
+        school = request.POST.get('school')
+        major = request.POST.get('major')
+        class_ = request.POST.get('class')
+        sex = request.POST.get('sex')
+
+
+
+
+        return redirect('/index_students/#myprofile')
+
+
+
+#更改个人密码
+def alter_personal_psd(request,email):
+    pass

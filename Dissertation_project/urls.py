@@ -30,4 +30,6 @@ urlpatterns = [
     path('upload_file/',views_student.upload_file),
     path('download_file/<str:email>/<str:student_file_name>/' ,views_student.download_file,name="download_file"),
     path('delete_file/<str:email>/<str:student_file_name>/' ,views_student.delete_file,name="delete_file"),
+    path('index_students/alter_personal_info/<str:email>/' ,views_student.alter_personal_info,name="alter_personal_info"), #修改个人资料
+    path('index_students/alter_personal_psd/<str:email>/' ,views_student.alter_personal_psd,name="alter_personal_psd"), #修改个人密码
 ]

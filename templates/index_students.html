@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/html">
 
 <head>
   <meta charset="utf-8">
@@ -258,65 +258,74 @@
             <div class="tab-pane active in" id="home">
                 <div class="row">
                     <div class="col-md-4"><br>
-                  <form id="tab">
+                  <form id="tab" method="POST"  action="{% url 'alter_personal_info' profile.email %}">{% csrf_token %}
                       <div class="form-group">
                           <label>用户名</label>
-                          <input type="text" value="jsmith" class="form-control">
+                          <input type="text" value="{{ profile.username }}" class="form-control" name = "username">
                       </div>
                       <div class="form-group">
                           <label>姓名</label>
-                          <input type="text" value="John" class="form-control">
+                          <input type="text" value="{{ profile.name }}" class="form-control" name = "name">
                       </div>
                       <div class="form-group">
                           <label>性别</label><br>
-                          <select style="width:100%;">
-                              <option>请选择</option>
-                              <option value = "1">男</option>
-                              <option value = "2">女</option>
-                          </select>
+                          {% ifequal  profile.sex 1 %}
+                              <input type="radio" name="sex" value="male" checked=true name = "sex"/> 男<br />
+                              <input type="radio" name="sex" value="female" name = "sex"/> 女<br />
+                              {% else %}
+                              <input type="radio" name="sex" value="male" name = "sex"/> 男<br />
+                              <input type="radio" name="sex" value="female" checked=true  name = "sex"/> 女<br />
+                          {% endifequal %}
                       </div>
                       <div class="form-group">
                           <label>邮箱</label>
-                          <input type="text" value="jsmith@yourcompany.com" class="form-control">
+                          <input type="text" value="{{ profile.email }}" class="form-control" name = "email">
                       </div>
-                  </form>
-                <div class="btn-toolbar list-toolbar">
-                    <button class="btn btn-primary"><i class="fa fa-save"></i> 保存</button>
-                </div>
+
                     </div>
                     <div class="col-md-6"><br>
                         <div class="form-group">
                           <label>学校</label>
-                          <input type="text" value="Smith" class="form-control">
+                          <input type="text" value="{{ profile.school }}" class="form-control" name = "school">
                       </div>
                         <div class="form-group">
                           <label>专业</label>
-                          <input type="text" value="Smith" class="form-control">
+                          <input type="text" value="{{ profile.major }}" class="form-control" name = "major">
                       </div>
                         <div class="form-group">
                           <label>班级</label>
-                          <input type="text" value="Smith" class="form-control">
+                          <input type="text" value="{{ profile.class }}" class="form-control" name = "class">
                       </div>
                         <div class="form-group">
                           <label>当前项目及指导老师</label>
-                          <input type="text" value="Smith" class="form-control">
-                      </div>
+                            {% ifequal profile.project_name 'null' %}
+                                <input type="text" value="当前未参与项目" class="form-control" disabled="disabled">
+                                {% else %}
+                                <input type="text" value="{{ profile.project_name }}/{{ profile.project_teacher }}" class="form-control" disabled="disabled">
+                            {% endifequal %}
+                        </div>
+                    <div class="btn-toolbar list-toolbar" style="width:35%;">
+                        <input class="btn btn-primary btn-block" type="submit" placeholder="保存" >
                     </div>
+                    </div>
+                </form>
                 </div>
+
             </div>
 
             <div class="tab-pane fade" id="profile">
                 <div class="row">
                     <div class="col-md-4"><br>
-                <form id="tab2">
+                <form id="tab2"  method="POST"  action="{% url 'alter_personal_psd' profile.email %}">{% csrf_token %}
                     <div class="form-group">
                         <label>新密码</label>
-                        <input type="password" class="form-control">
+                        <input type="password" class="form-control" name = "newpassword">
+                    </div>
+                    <div class="btn-toolbar list-toolbar" style="width:35%;">
+                        <input class="btn btn-primary btn-block" type="submit" placeholder="保存" >
                     </div>
                 </form>
-                <div class="btn-toolbar list-toolbar">
-                    <button class="btn btn-primary"><i class="fa fa-save"></i> 保存</button>
-                </div>
+
                     </div></div>
             </div>
         </div>
