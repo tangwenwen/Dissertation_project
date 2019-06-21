@@ -35,9 +35,9 @@
         </li>
 
         <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Tables">
-          <a class="nav-link" href="#table">
+          <a class="nav-link" href="#project">
             <i class="fa fa-fw fa-leanpub"></i>
-            <span class="nav-link-text">问题中心</span>
+            <span class="nav-link-text">项目管理</span>
           </a>
         </li>
 
@@ -82,8 +82,8 @@
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle mr-lg-2" id="messagesDropdown" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i class="fa fa-fw fa-envelope"></i>
-            <span class="d-lg-none">Messages
-              <span class="badge badge-pill badge-primary">12 New</span>
+            <span class="d-lg-none">消息
+              <span class="badge badge-pill badge-primary">{{ no_read_messagenum }}</span>
             </span>
             <span class="indicator text-primary d-none d-lg-block">
               <i class="fa fa-fw fa-circle"></i>
@@ -107,8 +107,8 @@
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle mr-lg-2" id="alertsDropdown" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i class="fa fa-fw fa-bell"></i>
-            <span class="d-lg-none">系统消息
-              <span class="badge badge-pill badge-warning">6 New</span>
+            <span class="d-lg-none">系统公告
+              <span class="badge badge-pill badge-warning">{{ alertnum }}</span>
             </span>
             <span class="indicator text-warning d-none d-lg-block">
               <i class="fa fa-fw fa-circle"></i>
@@ -182,11 +182,46 @@
             </a>
           </div>
         </div>
+      </div>
 
+<HR style="FILTER: alpha(opacity=100,finishopacity=0,style=2)" width="80%" color=#987cb9 SIZE=10 id ='project'><br><br>
+      <div class="card mb-3">
+          <div class="card-header" ><i class="fa fa-fw fa-leanpub"></i> 项目管理</div>
+          <div class="card-body">
+              <ul class="nav nav-tabs">
+                  <li class="active"><a href="#lookup_project" data-toggle="tab">项目浏览</a></li>&nbsp/&nbsp
+                  <li><a href="#choice_project" data-toggle="tab">项目选择</a></li>
+              </ul>
+              <div id="myTabContent" class="tab-content">
+                  <div class="tab-pane active in" id="lookup_project">
+                      <div class="feature-grids row">
+
+                          <div class="col-lg-4 col-sm-6 mt-lg-0 mt-4">
+                              <div class="f1 icon3 p-4">
+                                  <div class="icon">
+                                      <span class="fa fa-btc"></span>
+                                  </div>
+                                  <h3 class="my-3">Advertising</h3>
+                                  <p>Excepteur sint occaecat non proident, sunt in culpa quis. Phasellus lacinia id erat eu ullamcorper.</p>
+                              </div>
+                          </div>
+
+
+                      </div>
+                  </div>
+                  <div class="tab-pane fade" id="choice_project">
+
+                  </div>
+              </div>
+          </div>
+          <div class="card-footer small text-muted">最后一次更新在 {{ profile.time }}</div>
 
       </div>
+
+
+
       <!-- Area Chart Example-->
-     <HR style="FILTER: alpha(opacity=100,finishopacity=0,style=2)" width="80%" color=#987cb9 SIZE=10 id ='myprofile'>
+     <HR style="FILTER: alpha(opacity=100,finishopacity=0,style=2)" width="80%" color=#987cb9 SIZE=10 id ='myprofile'><br><br>
       <div class="card mb-3">
         <div class="card-header" >
           <i class="fa fa-fw fa-child"></i> 个人资料</div>
@@ -195,9 +230,6 @@
                 <li class="active"><a href="#home" data-toggle="tab">个人管理</a></li>&nbsp/&nbsp
                 <li><a href="#profile" data-toggle="tab">密码管理</a></li>
             </ul>
-
-{#<div class="row">#}
-{#    <div class="col-md-4"><br>#}
         <div id="myTabContent" class="tab-content">
             <div class="tab-pane active in" id="home">
                 <div class="row">
@@ -614,7 +646,7 @@
             </table>
           </div>
         </div>
-        <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
+        <div class="card-footer small text-muted">最近一次{{ file_lasted_time }}更新</div>
       </div>
     </div><br><br><br><br><br><br><br><br>
 

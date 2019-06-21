@@ -44,6 +44,11 @@ def index_students(request):
     else:
         profile['project_name'] = 'null'
         profile['project_teacher'] = 'null'
+    student_file_time_obj = student_file.objects.filter(email=User_info.objects.get(email=request.session.get('email'))).order_by('-student_upload_time')
+    if student_file_time_obj:
+        file_lasted_time = student_file_time_obj[0].student_upload_time
+    else:
+        file_lasted_time = '无'
     # 消息面板显示
     student_project_obj = Student_info.objects.get(student=User_info.objects.get(email=request.session.get('email'))).project
     messagenum = message.objects.filter(project=student_project_obj).count()
@@ -70,7 +75,8 @@ def index_students(request):
                                                      'no_read_messagenum':no_read_messagenum,
                                                      'alertnum':alertnum,
                                                      'brief_broadcasts':brief_broadcast_obj,
-                                                     'brief_messages':brief_message_list
+                                                     'brief_messages':brief_message_list,
+                                                     'file_lasted_time':file_lasted_time,
                                                      })
 
 #上传文件

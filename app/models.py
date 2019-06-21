@@ -89,5 +89,7 @@ class project(models.Model):
     project_enddate = models.DateTimeField(auto_now=False, verbose_name=u"项目结束时间")
     project_choices = ((1,u'未结题'),(2,u"已结题"))
     project_project_isfinished = models.IntegerField(choices=project_choices, default=1, verbose_name=u"项目当前状态")
+    project_image = models.ImageField(blank=True,null=True,verbose_name=u"项目介绍图片")
+    project_content = models.TextField(verbose_name=u"项目介绍", default='')
     def __str__(self):
         return self.project_name
