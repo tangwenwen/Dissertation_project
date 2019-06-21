@@ -66,6 +66,10 @@ def index_students(request):
                                                           |Q(project_2=project.objects.filter(id=int(student_info_obj[0].project_id))[0].id)
                                                           |Q(project_3=project.objects.filter(id=int(student_info_obj[0].project_id))[0].id)
                                                     )[0].teacher_name
+
+    #所有项目浏览，
+    all_project_obj = project.objects.all()
+    # unselected_project_obj = project.objects.exclude(id = )
     if request.method =='GET':
         return render(request,'index_students.html',{'username' : User_info.objects.filter(email=request.session.get('email'))[0].username,
                                                      'student_files':student_file_obj_list,

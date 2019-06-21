@@ -68,7 +68,7 @@ class message(models.Model):
     message_choices = ((1, u'未查看'), (2, u"已查看"))
     message_flag = models.IntegerField(choices=message_choices, default=1, verbose_name=u"消息是否被查看")
     def __str__(self):
-        return self.project.project_name
+        return self.message_publisher
 
 #公告表
 class broadcast(models.Model):
@@ -79,7 +79,7 @@ class broadcast(models.Model):
     broadcast_choices = ((1, u'学生'), (2, u"老师"),(3, u"所有广播"))
     broadcast_upload_to = models.IntegerField(choices=broadcast_choices, default=1, verbose_name=u"向何用户发布")
     def __str__(self):
-        return self.manager.admin_name
+        return self.broadcast_title
 
 #项目表
 class project(models.Model):
@@ -91,5 +91,7 @@ class project(models.Model):
     project_project_isfinished = models.IntegerField(choices=project_choices, default=1, verbose_name=u"项目当前状态")
     project_image = models.ImageField(blank=True,null=True,verbose_name=u"项目介绍图片")
     project_content = models.TextField(verbose_name=u"项目介绍", default='')
+    project_choices = ((1, u'未被选择'), (2, u"已被选择"))
+    project_flag = models.IntegerField(choices=project_choices, default=1, verbose_name=u"项目是否被选择")
     def __str__(self):
         return self.project_name
