@@ -26,10 +26,12 @@ urlpatterns = [
     path('register/', views.register),   #注册路由
     path('login/', views.login),       #登录路由
     path('forgot_password/', views.forgot_password),        #忘记密码路由
-    path('logout/',views.logout),         #推出登录路由
-    path('upload_file/',views_student.upload_file),
-    path('download_file/<str:email>/<str:student_file_name>/' ,views_student.download_file,name="download_file"),
-    path('delete_file/<str:email>/<str:student_file_name>/' ,views_student.delete_file,name="delete_file"),
-    path('index_students/alter_personal_info/<str:email>/' ,views_student.alter_personal_info,name="alter_personal_info"), #修改个人资料
-    path('index_students/alter_personal_psd/<str:email>/' ,views_student.alter_personal_psd,name="alter_personal_psd"), #修改个人密码
+    path('logout/',views.logout),         #退出出登录路由
+    path('upload_file/',views_student.upload_file),   #学生删除文件
+    path('download_file/<str:email>/<str:student_file_name>/' ,views_student.download_file,name="download_file"),#学生下载文件
+    path('delete_file/<str:email>/<str:student_file_name>/' ,views_student.delete_file,name="delete_file"),  #学生删除文件
+    path('index_students/alter_personal_info/<str:email>/' ,views_student.alter_personal_info,name="alter_personal_info"), #学生修改个人资料
+    path('index_students/alter_personal_psd/<str:email>/' ,views_student.alter_personal_psd,name="alter_personal_psd"), #学生修改个人密码
+    path('index_students/select_project/<str:email>/<int:project_id>/' ,views_student.select_project,name="select_project"), #学生选择项目
+    path('index_students/reply/', views_student.reply,name="reply"),  # 学生回复消息
 ]
