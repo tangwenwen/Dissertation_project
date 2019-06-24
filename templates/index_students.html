@@ -187,6 +187,9 @@
 <HR style="FILTER: alpha(opacity=100,finishopacity=0,style=2)" width="80%" color=#987cb9 SIZE=10 id ='project'><br><br>
       <div class="card mb-3">
           <div class="card-header" ><i class="fa fa-fw fa-leanpub"></i> 项目管理</div>
+      {% ifequal with_project 'true' %}
+          <p>当前无项目</p>
+      {% else %}
           <div class="card-body">
               <ul class="nav nav-tabs">
                   <li class="active"><a href="#lookup_project" data-toggle="tab">项目浏览</a></li>&nbsp/&nbsp
@@ -283,6 +286,7 @@
               </div>
           </div>
           <div class="card-footer small text-muted">最后一次更新在 {{ profile.time }}</div>
+      {% endifequal %}
       </div>
 
 

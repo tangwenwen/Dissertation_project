@@ -68,6 +68,9 @@ def index_students(request):
 
     #所有项目浏览，
     all_project_obj_list =list(project.objects.all().values())
+    with_project = ''
+    if not all_project_obj_list:
+        with_project = 'true'
     for i in all_project_obj_list:
         i['teacher'] = Teacher_info.objects.filter(Q(project_1=i['id'])
                                                           |Q(project_2=i['id'])
@@ -97,6 +100,7 @@ def index_students(request):
                                                      'file_lasted_time':file_lasted_time,
                                                      'all_projects':all_project_obj_list,
                                                      'my_messages':my_messages,
+                                                     'with_project':with_project,
                                                      })
 
 #上传文件
