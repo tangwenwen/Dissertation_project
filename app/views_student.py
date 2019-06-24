@@ -1,14 +1,14 @@
 from django.shortcuts import render
 from django.shortcuts import redirect
 from django.http import HttpResponse
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect,FileResponse
 from django.http import StreamingHttpResponse
 from django.contrib.auth.hashers import make_password,check_password
 from app.models import User_info,student_file,project,Student_info,Teacher_info,message,broadcast
 from app.views import check_login
 import os
 from django.db.models import Q
-from django.db import transaction
+from django.utils.http import urlquote
 @check_login
 def index_students(request):
     #文件
@@ -134,8 +134,15 @@ def download_file(request,email,student_file_name):
     path = os.path.join('app', 'temp_file', email, student_file_name)
     file = open(path, 'rb')
     response = HttpResponse(file)
-    response['Content-Type'] = 'application/octet-stream'
-    response['Content-Disposition'] = 'attachment;filename=' + student_file_name
+    if student_file_name.split('.')[1] =='docx':
+        response['Content-Type'] = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+        response['Content-Disposition'] = 'attachment;filename="%s"'%(urlquote(student_file_name))
+    elif student_file_name.split('.')[1] =='pdf':
+        response['Content-Type'] = 'application/pdf'
+        response['Content-Disposition'] = 'attachment;filename="%s"'%(urlquote(student_file_name))
+    elif student_file_name.split('.')[1] =='doc':
+        response['Content-Type'] = 'application/msword'
+        response['Content-Disposition'] = 'attachment;filename="%s"'%(urlquote(student_file_name))
     return response
 
 #删除文件
