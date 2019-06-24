@@ -182,14 +182,16 @@ def alter_personal_psd(request,email):
 
 #选择项目 ,更新studentinfo，porject
 def select_project(request,email,project_id):
-
-    _t = project.objects.get(id=project_id)
-    _t.project_flag = 2
-    _t.save()
-    _a = Student_info.objects.get(student=User_info.objects.get(email=email))
-    _a.project = _t
-    _a.save()
-    return redirect('/index_students/#choice_project')
+    if Student_info.objects.get(student= User_info.objects.get(email = email)).project:
+        return HttpResponse("<script>alert('您当前已有项目，无法再次选择！');window.history.back();</script>")
+    else:
+        _t = project.objects.get(id=project_id)
+        _t.project_flag = 2
+        _t.save()
+        _a = Student_info.objects.get(student=User_info.objects.get(email=email))
+        _a.project = _t
+        _a.save()
+        return redirect('/index_students/#choice_project')
 
 
 #学生回复消息
