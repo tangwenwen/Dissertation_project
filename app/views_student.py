@@ -20,8 +20,8 @@ def index_students(request):
     for i in (student_file_obj_list):
         i['project_name'] = project.objects.filter(id=int(student_info_obj[0].project_id))[0].project_name
         i['project_teacher'] =Teacher_info.objects.filter(Q(project_1=project.objects.filter(id=int(student_info_obj[0].project_id))[0].id)
-                                                          |Q(project_2=project.objects.filter(id=int(student_info_obj[0].project_id))[0].id)
-                                                          |Q(project_3=project.objects.filter(id=int(student_info_obj[0].project_id))[0].id)
+                                                          | Q(project_2=project.objects.filter(id=int(student_info_obj[0].project_id))[0].id)
+                                                          | Q(project_3=project.objects.filter(id=int(student_info_obj[0].project_id))[0].id)
                                                     )[0].teacher_name
     #个人资料
     profile = {}
