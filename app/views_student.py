@@ -8,8 +8,7 @@ from app.models import User_info,student_file,project,Student_info,Teacher_info,
 from app.views import check_login
 import os
 from django.db.models import Q
-from itertools import chain
-
+from django.db import transaction
 @check_login
 def index_students(request):
     #文件
@@ -68,8 +67,26 @@ def index_students(request):
                                                     )[0].teacher_name
 
     #所有项目浏览，
-    all_project_obj = project.objects.all()
-    # unselected_project_obj = project.objects.exclude(id = )
+    all_project_obj_list =list(project.objects.all().values())
+    with_project = ''
+    if not all_project_obj_list:
+        with_project = 'true'
+    for i in all_project_obj_list:
+        i['teacher'] = Teacher_info.objects.filter(Q(project_1=i['id'])
+                                                          |Q(project_2=i['id'])
+                                                          |Q(project_3=i['id'])
+                                                    )[0].teacher_name
+        i['teachermajor'] = Teacher_info.objects.filter(Q(project_1=i['id'])
+                                                   | Q(project_2=i['id'])
+                                                   | Q(project_3=i['id'])
+                                                   )[0].teacher_major
+        i['project_startdate'] = i['project_startdate'].date
+
+
+    #消息messages
+    my_messages = message.objects.filter(message_reservier=User_info.objects.get(email=request.session.get('email')))
+
+
     if request.method =='GET':
         return render(request,'index_students.html',{'username' : User_info.objects.filter(email=request.session.get('email'))[0].username,
                                                      'student_files':student_file_obj_list,
@@ -81,6 +98,9 @@ def index_students(request):
                                                      'brief_broadcasts':brief_broadcast_obj,
                                                      'brief_messages':brief_message_list,
                                                      'file_lasted_time':file_lasted_time,
+                                                     'all_projects':all_project_obj_list,
+                                                     'my_messages':my_messages,
+                                                     'with_project':with_project,
                                                      })
 
 #上传文件
@@ -158,3 +178,42 @@ def alter_personal_psd(request,email):
         newpassword = request.POST.get('newpassword')
         User_info.objects.filter(email=email).update(password = make_password(newpassword))
         return redirect('/index_students/#profile')
+
+
+#选择项目 ,更新studentinfo，porject
+def select_project(request,email,project_id):
+    if Student_info.objects.get(student= User_info.objects.get(email = email)).project:
+        return HttpResponse("<script>alert('您当前已有项目，无法再次选择！');window.history.back();</script>")
+    else:
+        _t = project.objects.get(id=project_id)
+        _t.project_flag = 2
+        _t.save()
+        _a = Student_info.objects.get(student=User_info.objects.get(email=email))
+        _a.project = _t
+        _a.save()
+        return redirect('/index_students/#choice_project')
+
+
+#学生回复消息
+def reply(request):
+    if request.method =='POST':
+        content = request.POST.get('message_content')
+        messageid = request.POST.get('messageid')
+        messagepublisher = request.POST.get('messagepublisher')
+        projectid = request.POST.get('projectid')
+        email = request.session.get('email')
+        try:
+            reply_message = message(message_content = content,      #插入新的消息记录
+                                    message_replyto=message.objects.get(id = messageid),
+                                    message_reservier=User_info.objects.get(id =messagepublisher),
+                                    project=project.objects.get(id = projectid),
+                                    message_publisher=User_info.objects.get(email=email),
+                                )
+            reply_message.save()
+            old_message = message.objects.get( id = messageid )      #更改原来的消息回复位
+            old_message.message_flag = 2
+            old_message.save()
+        except:
+            raise Exception
+    return HttpResponse('ok')
+
