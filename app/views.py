@@ -11,6 +11,7 @@ from django.http import HttpResponseRedirect
 from django.http import StreamingHttpResponse
 
 from functools import wraps
+
 from app.models import User_info,Student_info
 import smtplib
 from email.mime.text import MIMEText

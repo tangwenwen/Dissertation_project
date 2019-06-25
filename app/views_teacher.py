@@ -45,14 +45,40 @@ def delete_file(request,email,student_file_name):
     return redirect('/index_teachers/#table')
 
 def new_project(request):
-    print(request.FILES.get('picture'))
-    if request.method == 'POST':
-        newproject = project(
-            project_name=request.POST.get('projectname'),
-            project_free = request.POST.get('projectfee'),
-            project_image=request.FILES.get('picture'),
-            project_enddate = request.POST.get('enddate'),
-            project_content='11111',
-        )
-        newproject.save()
+    teacher_info_obj = Teacher_info.objects.filter(teacher=User_info.objects.get(email=request.session.get('email')))
+    if not teacher_info_obj[0].project_1:
+        if request.method == 'POST':
+            newproject = project(
+                project_name=request.POST.get('projectname'),
+                project_free=request.POST.get('projectfee'),
+                project_image=request.FILES.get('picture'),
+                project_enddate=request.POST.get('enddate'),
+                project_content=request.POST.get('projectcontent'),
+            )
+            newproject.save()
+            Teacher_info.objects.filter(teacher=User_info.objects.get(email=request.session.get('email'))).update(project_1=newproject)
+    elif not teacher_info_obj[0].project_2:
+        if request.method == 'POST':
+            newproject = project(
+                project_name=request.POST.get('projectname'),
+                project_free=request.POST.get('projectfee'),
+                project_image=request.FILES.get('picture'),
+                project_enddate=request.POST.get('enddate'),
+                project_content=request.POST.get('projectcontent'),
+            )
+            newproject.save()
+            Teacher_info.objects.filter(teacher=User_info.objects.get(email=request.session.get('email'))).update(project_2=newproject)
+    elif not teacher_info_obj[0].project_3:
+        if request.method == 'POST':
+            newproject = project(
+                project_name=request.POST.get('projectname'),
+                project_free=request.POST.get('projectfee'),
+                project_image=request.FILES.get('picture'),
+                project_enddate=request.POST.get('enddate'),
+                project_content=request.POST.get('projectcontent'),
+            )
+            newproject.save()
+            Teacher_info.objects.filter(teacher=User_info.objects.get(email=request.session.get('email'))).update(project_3=newproject)
+    else:
+        return HttpResponse("<script>alert('您当前项目已满，无法再次添加！');window.history.back();</script>")
     return redirect('/index_teachers/#project_manage')
