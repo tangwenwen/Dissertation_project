@@ -155,12 +155,15 @@ def download_file(request,email,student_file_name):
     file = open(path, 'rb')
     response = HttpResponse(file)
     if student_file_name.split('.')[1] =='docx':
+        student_file.objects.filter(student_file_name=student_file_name).update(student_file_flag='2')
         response['Content-Type'] = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
         response['Content-Disposition'] = 'attachment;filename="%s"'%(urlquote(student_file_name))
     elif student_file_name.split('.')[1] =='pdf':
+        student_file.objects.filter(student_file_name=student_file_name).update(student_file_flag='2')
         response['Content-Type'] = 'application/pdf'
         response['Content-Disposition'] = 'attachment;filename="%s"'%(urlquote(student_file_name))
     elif student_file_name.split('.')[1] =='doc':
+        student_file.objects.filter(student_file_name=student_file_name).update(student_file_flag='2')
         response['Content-Type'] = 'application/msword'
         response['Content-Disposition'] = 'attachment;filename="%s"'%(urlquote(student_file_name))
     return response
