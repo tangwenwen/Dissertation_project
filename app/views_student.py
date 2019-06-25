@@ -46,10 +46,17 @@ def index_students(request):
                                                           |Q(project_2=project.objects.filter(id=int(student_info_obj[0].project_id))[0].id)
                                                           |Q(project_3=project.objects.filter(id=int(student_info_obj[0].project_id))[0].id)
                                                     )[0]
+        # 显示指导老师的文件
+        teacher_obj = Teacher_info.objects.filter(Q(project_1=project.objects.filter(id=int(student_info_obj[0].project_id))[0].id)
+                                                          |Q(project_2=project.objects.filter(id=int(student_info_obj[0].project_id))[0].id)
+                                                          |Q(project_3=project.objects.filter(id=int(student_info_obj[0].project_id))[0].id)
+                                                    )[0].teacher
+        teacher_file = student_file.objects.filter(email= teacher_obj)
     else:
         profile['project_name'] = 'null'
         profile['project_teacher'] = 'null'
         adviser = 'null'
+        teacher_file='null'
     student_file_time_obj = student_file.objects.filter(email=User_info.objects.get(email=request.session.get('email'))).order_by('-student_upload_time')
     if student_file_time_obj:
         file_lasted_time = student_file_time_obj[0].student_upload_time
@@ -96,6 +103,8 @@ def index_students(request):
 
 
 
+
+
     if request.method =='GET':
         return render(request,'index_students.html',{'username' : User_info.objects.filter(email=request.session.get('email'))[0].username,
                                                      'student_files':student_file_obj_list,
@@ -111,8 +120,8 @@ def index_students(request):
                                                      'my_messages':my_messages,
                                                      'with_project':with_project,
                                                      'adviser':adviser,
-
-                                                     })
+                                                     'teacher_file':teacher_file
+                                                    })
 
 #上传文件
 def upload_file(request):
@@ -154,6 +163,22 @@ def download_file(request,email,student_file_name):
     elif student_file_name.split('.')[1] =='doc':
         response['Content-Type'] = 'application/msword'
         response['Content-Disposition'] = 'attachment;filename="%s"'%(urlquote(student_file_name))
+    return response
+
+#下载文件
+def download_teacher_file(request,teacheremail,filename):
+    path = os.path.join('app', 'temp_file', teacheremail, filename)
+    file = open(path, 'rb')
+    response = HttpResponse(file)
+    if filename.split('.')[1] =='docx':
+        response['Content-Type'] = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+        response['Content-Disposition'] = 'attachment;filename="%s"'%(urlquote(filename))
+    elif filename.split('.')[1] =='pdf':
+        response['Content-Type'] = 'application/pdf'
+        response['Content-Disposition'] = 'attachment;filename="%s"'%(urlquote(filename))
+    elif filename.split('.')[1] =='doc':
+        response['Content-Type'] = 'application/msword'
+        response['Content-Disposition'] = 'attachment;filename="%s"'%(urlquote(filename))
     return response
 
 #删除文件

@@ -35,4 +35,5 @@ urlpatterns = [
     path('index_students/select_project/<str:email>/<int:project_id>/' ,views_student.select_project,name="select_project"), #学生选择项目
     path('index_students/reply/', views_student.reply,name="reply"),  # 学生回复消息
     path('index_students/question/', views_student.question,name="question"),  # 学生向指导老师提问
+    path('index_students/download_teacher_file/<str:teacheremail>/<str:filename>', views_student.download_teacher_file,name="download_teacher_file"),  # 学生端指导老师的文件下载
 ]

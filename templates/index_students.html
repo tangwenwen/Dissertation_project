@@ -43,12 +43,21 @@
 
 
 
-          <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Tables">
-          <a class="nav-link" href="#table">
-            <i class="fa fa-fw fa-table"></i>
-            <span class="nav-link-text">我的论文</span>
+          <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Components">
+          <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseComponents" data-parent="#exampleAccordion">
+            <i class="fa fa-fw fa-child"></i>
+            <span class="nav-link-text">文件管理</span>
           </a>
-        </li>
+          <ul class="sidenav-second-level collapse" id="collapseComponents">
+            <li>
+              <a href="#table">我的论文</a>
+            </li>
+            <li >
+              <a data-toggle="modal" data-target="#teacherfile">老师文件</a>
+            </li>
+          </ul>
+           </li>
+
 
         <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Link">
           <a class="nav-link" href="#mymessages">
@@ -66,10 +75,10 @@
               <a href="#myprofile">我的资料</a>
             </li>
             <li>
-              <a href="cards.html">退出登录</a>
+              <a href="../logout">退出登录</a>
             </li>
           </ul>
-        </li>
+           </li>
       </ul>
       <ul class="navbar-nav sidenav-toggler">
         <li class="nav-item">
@@ -564,6 +573,51 @@
             <button class="btn btn-secondary" type="button" data-dismiss="modal">取消</button>
             <a class="btn btn-primary" href="../logout">退出登录</a>
           </div>
+        </div>
+      </div>
+    </div>
+  {#          老师文件模态框#}
+<div class="modal fade" id="teacherfile" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">指导老师文件</h5>
+            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">×</span>
+            </button>
+          </div>
+
+          <div class="modal-body">
+              <label>文件列表：</label>
+              {% ifequal teacher_file 'null'  %}
+                  <p>无文件！</p>
+              {% else %}
+
+                  <table class="table table-condensed">
+                  <thead>
+                  <tr>
+                      <th>文件名</th>
+                      <th>上传时间</th>
+                      <th>下载</th></tr>
+                  </thead>
+                  <tbody>
+                  {% for file in teacher_file %}
+                  <tr>
+                      <td>{{ file.student_file_name }}</td>
+                      <td>{{ file.student_upload_time }}</td>
+                      <td><a href="{% url 'download_teacher_file' file.email.email file.student_file_name  %}">download</a></td>
+                  </tr>
+                  {% endfor %}
+                  </tbody>
+              </table>
+              {% endifequal %}
+
+
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-default" type="button" data-dismiss="modal">取消</button>
+          </div>
+
         </div>
       </div>
     </div>
