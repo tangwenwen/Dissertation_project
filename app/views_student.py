@@ -271,10 +271,9 @@ def question(request):
             student_project = Student_info.objects.filter(student = User_info.objects.get(email=request.session.get('email')))[0].project
             question_message  = message(message_content=content,
                                         message_publisher= User_info.objects.get(email=request.session.get('email')),
-                                        message_reservier= User_info.objects.get(id = Teacher_info.objects.get(id = teacherid).teacher),
+                                        message_reservier= User_info.objects.get(id = Teacher_info.objects.get(id = teacherid).teacher.id),
                                         project= student_project)
             question_message.save()
-
         except:
             raise Exception
 
