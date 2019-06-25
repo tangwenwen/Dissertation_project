@@ -1,14 +1,14 @@
 from django.shortcuts import render
 from django.shortcuts import redirect
 from django.http import HttpResponse
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect,FileResponse
 from django.http import StreamingHttpResponse
 from django.contrib.auth.hashers import make_password,check_password
 from app.models import User_info,student_file,project,Student_info,Teacher_info,message,broadcast
 from app.views import check_login
 import os
 from django.db.models import Q
-from django.db import transaction
+from django.utils.http import urlquote
 @check_login
 def index_students(request):
     #文件
@@ -40,9 +40,23 @@ def index_students(request):
                                                           |Q(project_2=project.objects.filter(id=int(student_info_obj[0].project_id))[0].id)
                                                           |Q(project_3=project.objects.filter(id=int(student_info_obj[0].project_id))[0].id)
                                                     )[0].teacher_name
+
+        # 学生的指导老师信息
+        adviser = Teacher_info.objects.filter(Q(project_1=project.objects.filter(id=int(student_info_obj[0].project_id))[0].id)
+                                                          |Q(project_2=project.objects.filter(id=int(student_info_obj[0].project_id))[0].id)
+                                                          |Q(project_3=project.objects.filter(id=int(student_info_obj[0].project_id))[0].id)
+                                                    )[0]
+        # 显示指导老师的文件
+        teacher_obj = Teacher_info.objects.filter(Q(project_1=project.objects.filter(id=int(student_info_obj[0].project_id))[0].id)
+                                                          |Q(project_2=project.objects.filter(id=int(student_info_obj[0].project_id))[0].id)
+                                                          |Q(project_3=project.objects.filter(id=int(student_info_obj[0].project_id))[0].id)
+                                                    )[0].teacher
+        teacher_file = student_file.objects.filter(email= teacher_obj)
     else:
         profile['project_name'] = 'null'
         profile['project_teacher'] = 'null'
+        adviser = 'null'
+        teacher_file='null'
     student_file_time_obj = student_file.objects.filter(email=User_info.objects.get(email=request.session.get('email'))).order_by('-student_upload_time')
     if student_file_time_obj:
         file_lasted_time = student_file_time_obj[0].student_upload_time
@@ -87,6 +101,10 @@ def index_students(request):
     my_messages = message.objects.filter(message_reservier=User_info.objects.get(email=request.session.get('email')))
 
 
+
+
+
+
     if request.method =='GET':
         return render(request,'index_students.html',{'username' : User_info.objects.filter(email=request.session.get('email'))[0].username,
                                                      'student_files':student_file_obj_list,
@@ -101,7 +119,9 @@ def index_students(request):
                                                      'all_projects':all_project_obj_list,
                                                      'my_messages':my_messages,
                                                      'with_project':with_project,
-                                                     })
+                                                     'adviser':adviser,
+                                                     'teacher_file':teacher_file
+                                                    })
 
 #上传文件
 def upload_file(request):
@@ -134,8 +154,34 @@ def download_file(request,email,student_file_name):
     path = os.path.join('app', 'temp_file', email, student_file_name)
     file = open(path, 'rb')
     response = HttpResponse(file)
-    response['Content-Type'] = 'application/octet-stream'
-    response['Content-Disposition'] = 'attachment;filename=' + student_file_name
+    if student_file_name.split('.')[1] =='docx':
+        student_file.objects.filter(student_file_name=student_file_name).update(student_file_flag='2')
+        response['Content-Type'] = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+        response['Content-Disposition'] = 'attachment;filename="%s"'%(urlquote(student_file_name))
+    elif student_file_name.split('.')[1] =='pdf':
+        student_file.objects.filter(student_file_name=student_file_name).update(student_file_flag='2')
+        response['Content-Type'] = 'application/pdf'
+        response['Content-Disposition'] = 'attachment;filename="%s"'%(urlquote(student_file_name))
+    elif student_file_name.split('.')[1] =='doc':
+        student_file.objects.filter(student_file_name=student_file_name).update(student_file_flag='2')
+        response['Content-Type'] = 'application/msword'
+        response['Content-Disposition'] = 'attachment;filename="%s"'%(urlquote(student_file_name))
+    return response
+
+#下载文件
+def download_teacher_file(request,teacheremail,filename):
+    path = os.path.join('app', 'temp_file', teacheremail, filename)
+    file = open(path, 'rb')
+    response = HttpResponse(file)
+    if filename.split('.')[1] =='docx':
+        response['Content-Type'] = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+        response['Content-Disposition'] = 'attachment;filename="%s"'%(urlquote(filename))
+    elif filename.split('.')[1] =='pdf':
+        response['Content-Type'] = 'application/pdf'
+        response['Content-Disposition'] = 'attachment;filename="%s"'%(urlquote(filename))
+    elif filename.split('.')[1] =='doc':
+        response['Content-Type'] = 'application/msword'
+        response['Content-Disposition'] = 'attachment;filename="%s"'%(urlquote(filename))
     return response
 
 #删除文件
@@ -215,5 +261,24 @@ def reply(request):
             old_message.save()
         except:
             raise Exception
+    return HttpResponse('ok')
+
+def question(request):
+    if request.method =='POST':
+        content = request.POST.get('question_content')
+        teacherid = request.POST.get('teacherid')
+        try:
+            student_project = Student_info.objects.filter(student = User_info.objects.get(email=request.session.get('email')))[0].project
+            if student_project:
+                question_message  = message(message_content=content,
+                                        message_publisher= User_info.objects.get(email=request.session.get('email')),
+                                        message_reservier= User_info.objects.get(id = Teacher_info.objects.get(id = teacherid).teacher.id),
+                                        project= student_project)
+                question_message.save()
+            else:
+                return HttpResponse('false')
+        except:
+            raise Exception
+
     return HttpResponse('ok')
 

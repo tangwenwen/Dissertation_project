@@ -28,8 +28,8 @@ DEBUG = True
 ALLOWED_HOSTS = ['*']
 
 
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media').replace('\\', '/') # media即为图片上传的根路径
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Application definition
 
@@ -130,3 +130,4 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = (
 	os.path.join(BASE_DIR,'static'),
 	)
+
