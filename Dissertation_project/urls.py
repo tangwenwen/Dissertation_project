@@ -34,4 +34,5 @@ urlpatterns = [
     path('index_students/alter_personal_psd/<str:email>/' ,views_student.alter_personal_psd,name="alter_personal_psd"), #学生修改个人密码
     path('index_students/select_project/<str:email>/<int:project_id>/' ,views_student.select_project,name="select_project"), #学生选择项目
     path('index_students/reply/', views_student.reply,name="reply"),  # 学生回复消息
+    path('index_students/question/', views_student.question,name="question"),  # 学生向指导老师提问
 ]

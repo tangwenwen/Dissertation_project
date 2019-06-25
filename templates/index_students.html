@@ -415,8 +415,49 @@
             </div>
         </div>
         <div class="col-lg-4">
+            <div class="card mb-5 mb-lg-0">
+                  <div class="card-header">
+                      <h2 class="h6 mb-0 text-uppercase">向指导老师提问</h2>
+                  </div>
+                <div class="card-body">
+                    <div class="container">
+                        {% ifequal adviser 'null' %}
+                        {% else %}
+                            <div class="jumbotron" disabled="disabled">
+                                <p><a class="btn btn-primary btn-lg" role="button" disabled="disabled" data-toggle="modal" data-target="#questionModal">
+                                    发起提问</a> <input type="hidden" id="question_teacher" value="{{ adviser.id }}"/>
+                                </p>
+                            </div>
+                        {% endifequal %}
+                    </div>
+                </div>
+            </div>
 
         </div>
+    </div>
+{#    向指导老师提问模态框#}
+    <div class="modal fade" id="questionModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">提问</h5>
+            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">×</span>
+            </button>
+          </div>
+
+          <div class="modal-body">
+              <label>请输入问题的内容：</label>
+              <textarea rows="10" cols="60" id ="question" name = "question"></textarea>
+          </div>
+            {% csrf_token  %}
+          <div class="modal-footer">
+            <button class="btn btn-primary" type="submit" onclick="submit_question()">发送</button>
+            <button class="btn btn-default" type="button" data-dismiss="modal">取消</button>
+          </div>
+
+        </div>
+      </div>
     </div>
       <!-- 回复消息 弹窗-->
     <div class="modal fade" id="messageModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -428,7 +469,6 @@
               <span aria-hidden="true">×</span>
             </button>
           </div>
-
           <div class="modal-body">
               <label>请输入回复给<input type="text" name="teachername1" id ="teachername1" style="border-style:none;width:20%;"/>的内容</label>
               <textarea rows="10" cols="60" id ="reply" name = "reply"></textarea>
@@ -442,7 +482,6 @@
         </div>
       </div>
     </div>
-
 
       <HR style="FILTER: alpha(opacity=100,finishopacity=0,style=2)" width="80%" color=#987cb9 SIZE=10 id ='table'><br><br>
       <div class="card mb-3" id ="table">
@@ -498,11 +537,6 @@
       </div>
     </div><br><br><br><br><br><br><br><br>
 
-
-
-
-
-
     <!-- /.content-wrapper-->
     <footer class="sticky-footer">
       <div class="container">
@@ -554,6 +588,24 @@
       function getCsrf(){
 	        return $("input[name='csrfmiddlewaretoken']").val();
       };
+      function submit_question() {    //提问
+          var teacher = $('#question_teacher').val();
+          var content = $('#question').val();
+          console.log(teacher,content)
+          $.ajax({
+              type:'post',
+              url:'question/',
+              datatype:'html',
+              contentType: "application/x-www-form-urlencoded; charset=utf-8",
+              data : "csrfmiddlewaretoken="+getCsrf()+'&question_content='+content+'&teacherid='+teacher,
+              success:function (result) {
+                  if (result=='ok'){
+                      alert('发送成功！');
+                      $('#reply').val('');
+                  }
+              }
+          })
+      }
         {#ajax异步请求回复消息#}
       function submit_reply(){
           var reply = $('#reply').val();

@@ -40,9 +40,16 @@ def index_students(request):
                                                           |Q(project_2=project.objects.filter(id=int(student_info_obj[0].project_id))[0].id)
                                                           |Q(project_3=project.objects.filter(id=int(student_info_obj[0].project_id))[0].id)
                                                     )[0].teacher_name
+
+        # 学生的指导老师信息
+        adviser = Teacher_info.objects.filter(Q(project_1=project.objects.filter(id=int(student_info_obj[0].project_id))[0].id)
+                                                          |Q(project_2=project.objects.filter(id=int(student_info_obj[0].project_id))[0].id)
+                                                          |Q(project_3=project.objects.filter(id=int(student_info_obj[0].project_id))[0].id)
+                                                    )[0]
     else:
         profile['project_name'] = 'null'
         profile['project_teacher'] = 'null'
+        adviser = 'null'
     student_file_time_obj = student_file.objects.filter(email=User_info.objects.get(email=request.session.get('email'))).order_by('-student_upload_time')
     if student_file_time_obj:
         file_lasted_time = student_file_time_obj[0].student_upload_time
@@ -87,6 +94,8 @@ def index_students(request):
     my_messages = message.objects.filter(message_reservier=User_info.objects.get(email=request.session.get('email')))
 
 
+
+
     if request.method =='GET':
         return render(request,'index_students.html',{'username' : User_info.objects.filter(email=request.session.get('email'))[0].username,
                                                      'student_files':student_file_obj_list,
@@ -101,6 +110,8 @@ def index_students(request):
                                                      'all_projects':all_project_obj_list,
                                                      'my_messages':my_messages,
                                                      'with_project':with_project,
+                                                     'adviser':adviser,
+
                                                      })
 
 #上传文件
@@ -222,5 +233,22 @@ def reply(request):
             old_message.save()
         except:
             raise Exception
+    return HttpResponse('ok')
+
+def question(request):
+    if request.method =='POST':
+        content = request.POST.get('question_content')
+        teacherid = request.POST.get('teacherid')
+        try:
+            student_project = Student_info.objects.filter(student = User_info.objects.get(email=request.session.get('email')))[0].project
+            question_message  = message(message_content=content,
+                                        message_publisher= User_info.objects.get(email=request.session.get('email')),
+                                        message_reservier= User_info.objects.get(id = Teacher_info.objects.get(id = teacherid).teacher),
+                                        project= student_project)
+            question_message.save()
+
+        except:
+            raise Exception
+
     return HttpResponse('ok')
 
