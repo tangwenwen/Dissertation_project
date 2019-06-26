@@ -11,7 +11,7 @@ from django.http import HttpResponseRedirect
 from django.http import StreamingHttpResponse
 
 from functools import wraps
-from app.models import User_info,Student_info,student_file,project,Teacher_info
+from app.models import User_info,Student_info,student_file,project,Teacher_info,broadcast,Admin_info
 import smtplib
 from email.mime.text import MIMEText
 from email.utils import formataddr
@@ -67,63 +67,77 @@ def logout(request):
 # 主页后台代码
 @check_login
 def index(request):
-    email = request.session.get('email')
-    Userobj = User_info.objects.filter(email=email)
-    if Userobj:
-        return render(request, 'index.html',{'username': User_info.objects.filter(email=request.session.get('email'))[0].username})
     #读取全部文件
 
-    files_obj = student_file.objects.all()
-    files_user_info_obj = User_info.objects.filter(email=student_file.objects.get('email_id'))
+    files_obj = student_file.objects.all().values()
+    files_obj_list = list(files_obj)
+    #for i in (files_obj_list):
+       #i['user_name']=User_info.objects.filter(email=files_obj[0].email)[0].username
+
+    #files_user_info_obj = User_info.objects.filter(id=student_file.objects.get('email_id'))
     #student_file_obj = student_file.objects.filter(email=User_info.objects.get(email=request.session.get('email'))).values()
     #student_info_obj = Student_info.objects.filter(student=User_info.objects.get(email=request.session.get('email')))
     # project_obj = project.objects.filter(id=int(student_info_obj[0].project_id))
-    file_obj_list = list(files_obj)
+    print(files_obj_list)
     #student_file_obj_list = list(student_file_obj)
-    for i in (file_obj_list):
-        i['project_name'] = project.objects.filter(id=int(files_user_info_obj[0].project_id))[0].project_name
-        i['project_teacher'] = Teacher_info.objects.filter(Q(project_1=project.objects.filter(id=int(files_user_info_obj[0].project_id))[0].id)
-                                    | Q(project_2=project.objects.filter(id=int(files_user_info_obj[0].project_id))[0].id)
-                                    | Q(project_3=project.objects.filter(id=int(files_user_info_obj[0].project_id))[0].id)
-                                    )[0].teacher_name
 
-    # print(student_file_obj_list)
+
+    # 所有项目浏览，
+    all_project_obj_list = list(project.objects.all().values())
+    with_project = ''
+    if not all_project_obj_list:
+        with_project = 'true'
+    for i in all_project_obj_list:
+        i['teacher'] = Teacher_info.objects.filter(Q(project_1=i['id'])
+                                                   | Q(project_2=i['id'])
+                                                   | Q(project_3=i['id'])
+                                                   )[0].teacher_name
+        i['teachermajor'] = Teacher_info.objects.filter(Q(project_1=i['id'])
+                                                        | Q(project_2=i['id'])
+                                                        | Q(project_3=i['id'])
+                                                        )[0].teacher_major
+        i['project_startdate'] = i['project_startdate'].date
+
+    #所有学生
+    all_student_obj = Student_info.objects.all()
+    all_student_obj_list = list(Student_info.objects.all().values())
+    for i in all_student_obj_list:
+        i['project_name']=all_student_obj[0].project.project_name
+
+
+    #所有教师
+    all_teacher_obj = Teacher_info.objects.all()
+    all_teacher_obj_list = list(Teacher_info.objects.all().values())
+    for i in all_teacher_obj_list:
+        i['project1_name'] = all_teacher_obj[0].project_1.project_name
+        #i['project2_name'] = all_teacher_obj[0].project_2.project_name
+        #i['project3_name'] = all_teacher_obj[0].project_3.project_name
+
+
+
+
+
     if request.method == 'GET':
-        return render(request, 'index_students.html',
+        return render(request, 'index.html',
                       {'username': User_info.objects.filter(email=request.session.get('email'))[0].username,
-                       'student_files': file_obj_list,
+                       'student_files': files_obj_list,
                        'email': User_info.objects.get(email=request.session.get('email')),
+                       'all_projects': all_project_obj_list,
+                       'all_students': all_student_obj_list,
+                       'all_teachers': all_teacher_obj_list
                        })
 
+#重置密码
+def resetpassword(requst,teacherid):
+    email=User_info.objects.get(id=teacherid)[0].email
+    print(email)
+    return 0
 
-# 上传文件
-def upload_file(request):
-    user_email = request.session.get('email')
-
-    if request.method == 'POST':
-        file_obj = request.FILES.get('file')
-        if file_obj is None:
-            return redirect('/index/#table')
-        else:
-            isExists = os.path.exists('./app/temp_file/%s' % user_email)
-            if not isExists:
-                os.makedirs('./app/temp_file/%s' % user_email)
-            file_path = os.path.join('app', 'temp_file', user_email, file_obj.name)
-            with open(file_path, 'wb+') as f:
-                for chunk in file_obj.chunks():
-                    f.write(chunk)
-            fsize = os.path.getsize(file_path)
-            fobj = User_info.objects.get(email=user_email)
-            user_file_obj = student_file(email=fobj, student_file_name=file_obj.name, student_file_size=fsize,
-                                         student_upload_add=file_path)
-            user_file_obj.save()
-            return redirect('/index/#table')
-    else:
-        return redirect('/index_students/#table')
 
 
 # 下载文件
 def download_file(request, email, student_file_name):
+    email=student_file.objects.get(student_file_name=student_file_name)[0].email
     path = os.path.join('app', 'temp_file', email, student_file_name)
     file = open(path, 'rb')
     response = HttpResponse(file)
@@ -134,6 +148,7 @@ def download_file(request, email, student_file_name):
 
 # 删除文件
 def delete_file(request, email, student_file_name):
+    email = student_file.objects.get(student_file_name=student_file_name)[0].email
     userfile = student_file.objects.get(email=User_info.objects.get(email=email), student_file_name=student_file_name)
     userfile.delete()
     path = os.path.join('app', 'temp_file', email, student_file_name)
@@ -168,6 +183,36 @@ def register(request):
 
     return render(request,'register.html')
 
+#添加用户
+def adduser(request):
+    message = []
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+        firstname = request.POST.get('firstname')
+        lastname = request.POST.get('lastname')
+        confirmpassword = request.POST.get("confirmpassword")
+        role = request.POST.get('role')
+        num_role = lambda x: 1 if role == 'student' else 2
+        int_role = num_role(role)
+        username = lastname+firstname
+        if (not email) or (not password) or (not firstname) or (not lastname) or (not confirmpassword):
+            message.append('input_none')
+        if password !=confirmpassword:
+            message.append('confirm_error')
+        if User_info.objects.filter(email=email) :
+            message.append('email_exist')
+        if not message:
+            User = User_info(username=username,password=make_password(password),email=email,comment_type=int_role)
+            User.save()
+            student = Student_info(student=User)
+            student.save()
+            message.append('register_successful')
+        else:
+            return render(request, 'index.html', {"message": message})
+        return render(request, 'index.html', {"message": message})
+
+    return render(request,'index.html')
 
 
 #忘记密码后台代码
@@ -196,3 +241,25 @@ def forgot_password(request):
             return render(request, 'forgot_password.html', {"message": 'unsuccessful'})
 
     return render(request,'forgot_password.html')
+
+#发送公告
+def sendbroadcast(request):
+    if request.method =='POST':
+        content = request.POST.get('broadcast_content')
+        teacherid = request.POST.get('teacherid')
+        print("debug2")
+        try:
+            the_manger = Admin_info.objects.filter(admin=User_info.objects.get(email=request.session.get('email')))[0].admin
+            #student_project = Student_info.objects.filter(student = User_info.objects.get(email=request.session.get('email')))[0].project
+            if the_manger:
+                broadcast_message  = broadcast(broadcast_content=content,
+                                        manager= the_manger,
+                                     )
+                broadcast_message.save()
+            else:
+                print("debug1")
+                return HttpResponse('false')
+        except:
+            raise Exception
+
+    return HttpResponse('ok')
