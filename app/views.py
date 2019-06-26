@@ -72,14 +72,8 @@ def index(request):
     files_obj = student_file.objects.all().values()
     files_obj_list = list(files_obj)
     #for i in (files_obj_list):
-       #i['user_name']=User_info.objects.filter(email=files_obj[0].email)[0].username
+       #i['user_name']=User_info.objects.get(email=i['email']).username
 
-    #files_user_info_obj = User_info.objects.filter(id=student_file.objects.get('email_id'))
-    #student_file_obj = student_file.objects.filter(email=User_info.objects.get(email=request.session.get('email'))).values()
-    #student_info_obj = Student_info.objects.filter(student=User_info.objects.get(email=request.session.get('email')))
-    # project_obj = project.objects.filter(id=int(student_info_obj[0].project_id))
-    print(files_obj_list)
-    #student_file_obj_list = list(student_file_obj)
 
 
     # 所有项目浏览，
@@ -103,6 +97,7 @@ def index(request):
     all_student_obj_list = list(Student_info.objects.all().values())
     for i in all_student_obj_list:
         i['project_name']=all_student_obj[0].project.project_name
+        i['email']=all_student_obj[0].student.email
 
 
     #所有教师
@@ -110,6 +105,7 @@ def index(request):
     all_teacher_obj_list = list(Teacher_info.objects.all().values())
     for i in all_teacher_obj_list:
         i['project1_name'] = all_teacher_obj[0].project_1.project_name
+        i['email'] = all_teacher_obj[0].teacher.email
         #i['project2_name'] = all_teacher_obj[0].project_2.project_name
         #i['project3_name'] = all_teacher_obj[0].project_3.project_name
 
@@ -129,8 +125,12 @@ def index(request):
 
 #重置密码
 def resetpassword(requst,email):
-    print(email)
-    return 0
+    reset_user=User_info.objects.get(email=email)
+    password='123456'
+    print(reset_user)
+    reset_user.password=make_password(password)
+    reset_user.save()
+    return render(requst,'index.html')
 
 
 
@@ -246,13 +246,12 @@ def sendbroadcast(request):
     if request.method =='POST':
         content = request.POST.get('broadcast_content')
         teacherid = request.POST.get('teacherid')
-        print("debug2")
         try:
-            the_manger = Admin_info.objects.filter(admin=User_info.objects.get(email=request.session.get('email')))[0].admin
-            #student_project = Student_info.objects.filter(student = User_info.objects.get(email=request.session.get('email')))[0].project
+            the_manger = Admin_info.objects.get(admin=User_info.objects.get(email=request.session.get('email')))
             if the_manger:
                 broadcast_message  = broadcast(broadcast_content=content,
                                         manager= the_manger,
+                                        broadcast_upload_to= 3
                                      )
                 broadcast_message.save()
             else:
