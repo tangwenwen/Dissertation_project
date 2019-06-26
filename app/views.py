@@ -128,8 +128,7 @@ def index(request):
                        })
 
 #重置密码
-def resetpassword(requst,teacherid):
-    email=User_info.objects.get(id=teacherid)[0].email
+def resetpassword(requst,email):
     print(email)
     return 0
 
