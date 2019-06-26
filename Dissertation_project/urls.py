@@ -38,7 +38,10 @@ urlpatterns = [
     path('index_students/alter_personal_psd/<str:email>/' ,views_student.alter_personal_psd,name="alter_personal_psd"), #学生修改个人密码
     path('index_students/select_project/<str:email>/<int:project_id>/' ,views_student.select_project,name="select_project"), #学生选择项目
     path('index_students/reply/', views_student.reply,name="reply"),  # 学生回复消息
+    path('index_teachers/reply/', views_teacher.teacher_reply,name="teacher_reply"),  # 老师回复消息
     path('newproject/',views_teacher.new_project),   #老师新建项目
+    path('delete_project_teacher/<str:email>/<str:project_id>/' ,views_teacher.delete_project,name="delete_project_teacher"),  #老师删除项目
     path('index_students/question/', views_student.question,name="question"),  # 学生向指导老师提问
+    path('index_teachers/teacher_question/', views_teacher.teacher_question,name="teacher_question"),  # 学生向指导老师提问
     path('index_students/download_teacher_file/<str:teacheremail>/<str:filename>', views_student.download_teacher_file,name="download_teacher_file"),  # 学生端指导老师的文件下载
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
