@@ -40,5 +40,8 @@ urlpatterns = [
     path('index_students/reply/', views_student.reply,name="reply"),  # 学生回复消息
     path('newproject/',views_teacher.new_project),   #老师新建项目
     path('index_students/question/', views_student.question,name="question"),  # 学生向指导老师提问
+    path('adduser/',views.adduser), #添加用户
+    path('sendbroadcast/',views.sendbroadcast), #发布公告
+    path('resetpassword/<str:email>',views.resetpassword,name="resetpassword"),
     path('index_students/download_teacher_file/<str:teacheremail>/<str:filename>', views_student.download_teacher_file,name="download_teacher_file"),  # 学生端指导老师的文件下载
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
