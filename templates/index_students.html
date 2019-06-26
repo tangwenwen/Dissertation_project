@@ -65,12 +65,18 @@
             <span class="nav-link-text">消息中心</span>
           </a>
         </li>
+          <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Link">
+          <a class="nav-link" href="#news">
+            <i class="fa fa-fw fa-bullhorn"></i>
+            <span class="nav-link-text">学校新闻</span>
+          </a>
+        </li>
            <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Components">
-          <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#collapseComponents" data-parent="#exampleAccordion">
+          <a class="nav-link nav-link-collapse collapsed" data-toggle="collapse" href="#aaa" data-parent="#exampleAccordion">
             <i class="fa fa-fw fa-child"></i>
             <span class="nav-link-text">个人中心</span>
           </a>
-          <ul class="sidenav-second-level collapse" id="collapseComponents">
+          <ul class="sidenav-second-level collapse" id="aaa">
             <li>
               <a href="#myprofile">我的资料</a>
             </li>
@@ -493,6 +499,8 @@
       </div>
     </div>
 
+
+
       <HR style="FILTER: alpha(opacity=100,finishopacity=0,style=2)" width="80%" color=#987cb9 SIZE=10 id ='table'><br><br>
       <div class="card mb-3" id ="table">
         <div class="card-header">
@@ -545,7 +553,40 @@
         </div>
         <div class="card-footer small text-muted">最近一次{{ file_lasted_time }}更新</div>
       </div>
-    </div><br><br><br><br><br><br><br><br>
+
+          <HR style="FILTER: alpha(opacity=100,finishopacity=0,style=2)" width="80%" color=#987cb9 SIZE=10 id ='news'><br><br>
+      <div class="card mb-3" id ="news">
+        <div class="card-header">
+          <i class="fa fa-table"></i> 学校新闻</div>
+          <div class="card-body">
+
+                    {% for  new in news %}
+                    <div class="d-flex justify-content-between align-items-start align-items-sm-center mb-4 flex-column flex-sm-row" >
+                        <div class="left d-flex align-items-center">
+                            <div class="icon icon-lg shadow mr-3 text-gray"><i class="fa fa-fw fa-arrow-circle-o-down"></i></div>
+                            <div class="text" >
+                                <h6 class="mb-0 d-flex align-items-center">
+                                    <span onclick="javascript:window.open('{{ new.href }}')" >{{ new.title }}</span>
+                                </h6>
+
+                            </div>
+                        </div>
+                        <div class="right ml-5 ml-sm-0 pl-3 pl-sm-0 text-violet">
+                            <h6>{{ new.time }}</h6>
+                        </div>
+                    </div>
+                    {% endfor %}
+
+                </div>
+
+        <div class="card-footer small text-muted">最近一次{{ lasted_time_new }}更新</div>
+      </div>
+    </div>
+    </div>
+  </div>
+
+
+
 
     <!-- /.content-wrapper-->
     <footer class="sticky-footer">

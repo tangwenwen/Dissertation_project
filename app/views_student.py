@@ -9,6 +9,8 @@ from app.views import check_login
 import os
 from django.db.models import Q
 from django.utils.http import urlquote
+import requests
+from lxml import etree
 @check_login
 def index_students(request):
     #文件
@@ -101,8 +103,19 @@ def index_students(request):
     my_messages = message.objects.filter(message_reservier=User_info.objects.get(email=request.session.get('email')))
 
 
-
-
+    res = requests.get('http://jwc.ecust.edu.cn/').content.decode('utf-8')
+    html = etree.HTML(res)
+    title = html.xpath("//*[@id='wp_news_w21']/table/*/td[2]/table/*/td[1]/a/@title")
+    href = html.xpath("//*[@id='wp_news_w21']/table/*/td[2]/table/*/td[1]/a/@href")
+    time = html.xpath("//*[@id='wp_news_w21']/table/*/td[2]/table/*/td[2]/div/text()")
+    news = []
+    lasted_time_new = time[0]
+    for i in range(len(title)):
+        new = {}
+        new['title'] = title[i]
+        new['href'] = 'http://jwc.ecust.edu.cn/'+href[i]
+        new['time'] = time[i]
+        news.insert(i,new)
 
 
     if request.method =='GET':
@@ -120,7 +133,9 @@ def index_students(request):
                                                      'my_messages':my_messages,
                                                      'with_project':with_project,
                                                      'adviser':adviser,
-                                                     'teacher_file':teacher_file
+                                                     'teacher_file':teacher_file,
+                                                     'news':news,
+                                                     'lasted_time_new':lasted_time_new
                                                     })
 
 #上传文件
