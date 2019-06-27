@@ -488,7 +488,7 @@
                                   <td>{{ project.project_free }}</td>
                                   <td>{{ project.project_enddate }}</td>
                                   {% ifequal project.project_flag 1 %}
-                                  <td><a href="{% url 'select_project' email.email  project.id %}" class="btn btn-link">选择</a></td>
+                                  <td><a class="btn btn-link">未被选择</a></td>
                                   {% else %}
                                       <td><a  class="btn btn-link">已被选择</a></td>
                                   {% endifequal %}
