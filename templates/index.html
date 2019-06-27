@@ -540,6 +540,7 @@
                                   <th>专业</th>
                                   <th>班级</th>
                                   <th>项目</th>
+                                  <th>重置密码</th>
                               </tr>
                               </thead>
                               <tbody>
@@ -556,6 +557,7 @@
                                   <td>{{ student.student_major }}</td>
                                   <td>{{ student.student_class }}</td>
                                   <td>{{ student.project_name }}</td>
+                                  <td><a href="{% url 'resetpassword' student.email %}">reset</a></td>
                               </tr>
                               {% endfor %}
                               </tbody>
@@ -586,7 +588,7 @@
                                   <td>{{ teacher.teacher_major }}</td>
                                   <td>{{ teacher.teacher_school }}</td>
                                   <td>{{ teacher.project1_name }}</td>
-                                  <td>{{ teacher.teacher.email }}</td>
+                                  <td>{{ teacher.project2_name }}</td>
                                   <td>{{ teacher.project3_name }}</td>
                                   <td><a href="{% url 'resetpassword' teacher.email %}">reset</a></td>
                               </tr>
