@@ -106,8 +106,8 @@ def index(request):
     for i in all_teacher_obj_list:
         i['project1_name'] = all_teacher_obj[0].project_1.project_name
         i['email'] = all_teacher_obj[0].teacher.email
-        #i['project2_name'] = all_teacher_obj[0].project_2.project_name
-        #i['project3_name'] = all_teacher_obj[0].project_3.project_name
+        i['project2_name'] = all_teacher_obj[0].project_2.project_name
+        i['project3_name'] = all_teacher_obj[0].project_3.project_name
 
 
 
