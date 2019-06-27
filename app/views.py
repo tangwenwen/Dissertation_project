@@ -255,7 +255,6 @@ def sendbroadcast(request):
                                      )
                 broadcast_message.save()
             else:
-                print("debug1")
                 return HttpResponse('false')
         except:
             raise Exception
