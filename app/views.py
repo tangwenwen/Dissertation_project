@@ -71,8 +71,8 @@ def index(request):
 
     files_obj = student_file.objects.all().values()
     files_obj_list = list(files_obj)
-    #for i in (files_obj_list):
-       #i['user_name']=User_info.objects.get(email=i['email']).username
+    for i in (files_obj_list):
+       i['user_name']=User_info.objects.get(email=student_file.objects.all()[0].email.email).username
 
 
 

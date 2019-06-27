@@ -70,7 +70,7 @@
           </ul>
         </li>
         <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Link">
-          <a class="nav-link" href="#">
+          <a class="nav-link" href="http://jwc.ecust.edu.cn/">
             <i class="fa fa-fw fa-link"></i>
             <span class="nav-link-text">教务处信息网</span>
           </a>
@@ -271,7 +271,7 @@
       <!-- Area Chart Example-->
       <div class="card mb-3" id="charts">
         <div class="card-header">
-          <i class="fa fa-area-chart"></i> Area Chart Example</div>
+          <i class="fa fa-area-chart"></i> 系统日活跃量</div>
         <div class="card-body">
           <canvas id="myAreaChart" width="100%" height="30"></canvas>
         </div>
@@ -285,39 +285,39 @@
           <!-- Example Bar Chart Card-->
           <div class="card mb-3"><!--柱状图-->
             <div class="card-header">
-              <i class="fa fa-bar-chart"></i> Bar Chart Example</div>
+              <i class="fa fa-bar-chart"></i> 问题统计</div>
             <div class="card-body">
               <div class="row">
                 <div class="col-sm-8 my-auto">
                   <canvas id="myBarChart" width="100" height="50"></canvas>
                 </div>
                 <div class="col-sm-4 text-center my-auto">
-                  <div class="h4 mb-0 text-primary">$34,693</div>
-                  <div class="small text-muted">YTD Revenue</div>
+                  <div class="h4 mb-0 text-primary">342</div>
+                  <div class="small text-muted">学生提出问题</div>
                   <hr>
-                  <div class="h4 mb-0 text-warning">$18,474</div>
-                  <div class="small text-muted">YTD Expenses</div>
+                  <div class="h4 mb-0 text-warning">293</div>
+                  <div class="small text-muted">老师回答问题</div>
                   <hr>
-                  <div class="h4 mb-0 text-success">$16,219</div>
-                  <div class="small text-muted">YTD Margin</div>
+                  <div class="h4 mb-0 text-success">635</div>
+                  <div class="small text-muted">日问题总量</div>
                 </div>
               </div>
             </div>
-            <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
+            <div class="card-footer small text-muted">最后更新在 </div>
           </div>
 
           <!-- Example Notifications Card-->
           <div class="card mb-3">
             <div class="card-header">
-              <i class="fa fa-bell-o"></i> Feed Example</div>
+              <i class="fa fa-bell-o"></i> 用户动态</div>
             <div class="list-group list-group-flush small">
               <a class="list-group-item list-group-item-action" href="#">
                 <div class="media">
                   <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/45x45" alt="">
                   <div class="media-body">
-                    <strong>David Miller</strong>posted a new article to
-                    <strong>David Miller Website</strong>.
-                    <div class="text-muted smaller">Today at 5:43 PM - 5m ago</div>
+                    <strong>刘三</strong>向
+                    <strong>陈平老师</strong>提出问题.
+                    <div class="text-muted smaller">2019/6/26 5:43 PM - 5m ago</div>
                   </div>
                 </div>
               </a>
@@ -325,8 +325,8 @@
                 <div class="media">
                   <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/45x45" alt="">
                   <div class="media-body">
-                    <strong>Samantha King</strong>sent you a new message!
-                    <div class="text-muted smaller">Today at 4:37 PM - 1hr ago</div>
+                    <strong>朱重八</strong>上传了新文件
+                    <div class="text-muted smaller">2019/6/26 4:37 PM - 1hr ago</div>
                   </div>
                 </div>
               </a>
@@ -334,27 +334,15 @@
                 <div class="media">
                   <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/45x45" alt="">
                   <div class="media-body">
-                    <strong>Jeffery Wellings</strong>added a new photo to the album
-                    <strong>Beach</strong>.
-                    <div class="text-muted smaller">Today at 4:31 PM - 1hr ago</div>
+                    <strong>管理员李二</strong>发送了新公告
+                    <strong>有关系统维护的通知</strong>.
+                    <div class="text-muted smaller">2019/6/26 4:31 PM - 1hr ago</div>
                   </div>
                 </div>
               </a>
-              <a class="list-group-item list-group-item-action" href="#">
-                <div class="media">
-                  <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/45x45" alt="">
-                  <div class="media-body">
-                    <i class="fa fa-code-fork"></i>
-                    <strong>Monica Dennis</strong>forked the
-                    <strong>startbootstrap-sb-admin</strong>repository on
-                    <strong>GitHub</strong>.
-                    <div class="text-muted smaller">Today at 3:54 PM - 2hrs ago</div>
-                  </div>
-                </div>
-              </a>
-              <a class="list-group-item list-group-item-action" href="#">View all activity...</a>
+              <a class="list-group-item list-group-item-action" href="#">查看更多</a>
             </div>
-            <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
+            <div class="card-footer small text-muted">最后更新在 2019/6/26 22:40</div>
           </div>
         </div>
       </div>
@@ -445,7 +433,7 @@
                 <tr>
 
                   <td>{{ student_file.student_file_name }}</td>
-                  <td>{{ student_file.project_teacher }}</td>
+                  <td>{{ student_file.user_name }}</td>
                   <td>{{ student_file.student_upload_time }}</td>
                   <td><a href="{% url 'download_file' email.email student_file.student_file_name  %}">download</a></td>
 				   <td><a href="{% url 'delete_file' email.email student_file.student_file_name  %}">delete</a></td>
