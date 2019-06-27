@@ -30,7 +30,8 @@ urlpatterns = [
     path('login/', views.login),       #登录路由
     path('forgot_password/', views.forgot_password),        #忘记密码路由
     path('logout/',views.logout),         #退出出登录路由
-    path('upload_file/',views_student.upload_file),   #学生删除文件
+    path('upload_file/',views_student.upload_file),   #学生上传文件
+    path('teacher_upload_file/',views_teacher.teacher_upload_file),   #学生上传文件
     path('download_file/<str:email>/<str:student_file_name>/' ,views_student.download_file,name="download_file"),#学生下载文件
     path('delete_file/<str:email>/<str:student_file_name>/' ,views_student.delete_file,name="delete_file"),  #学生删除文件
     path('delete_file_teacher/<str:email>/<str:student_file_name>/' ,views_teacher.delete_file,name="delete_file_teacher"),  #老师删除文件

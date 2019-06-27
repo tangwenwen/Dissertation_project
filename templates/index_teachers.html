@@ -28,25 +28,25 @@
     <div class="collapse navbar-collapse" id="navbarResponsive">
       <ul class="navbar-nav navbar-sidenav" id="exampleAccordion">
         <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Dashboard">
-          <a class="nav-link" href="index.html">
+          <a class="nav-link" href="#project_manage">
             <i class="fa fa-fw fa-dashboard"></i>
             <span class="nav-link-text">项目管理</span>
           </a>
         </li>
         <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Charts">
-          <a class="nav-link" href="charts.html">
+          <a class="nav-link" href="#message_center">
             <i class="fa fa-fw fa-area-chart"></i>
             <span class="nav-link-text">回答问题</span>
           </a>
         </li>
         <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Tables">
-          <a class="nav-link" href="tables.html">
+          <a class="nav-link" href="#table">
             <i class="fa fa-fw fa-table"></i>
             <span class="nav-link-text">上传/下载文档</span>
           </a>
         </li>
         <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Tables">
-          <a class="nav-link" href="tables.html">
+          <a class="nav-link" href="#message_center">
             <i class="fa fa-fw fa-table"></i>
             <span class="nav-link-text">群发消息</span>
           </a>
@@ -277,7 +277,7 @@
 
     <!-- 回复消息-->
     <HR style="FILTER: alpha(opacity=100,finishopacity=0,style=2)" width="80%" color=#987cb9 SIZE=10 id ='mymessages'><br><br>
-    <div class="row">
+    <div class="row" id="message_center">
         <div class="col-lg-8">
             <div class="card mb-5 mb-lg-0">
                   <div class="card-header">
@@ -389,6 +389,12 @@
       <div class="card mb-3" id="table">
         <div class="card-header">
           <i class="fa fa-table"></i> 所有已上传的论文</div>
+      <div style=" z-index:1">
+          <form  action="/teacher_upload_file/" method="post" enctype="multipart/form-data">
+      		{% csrf_token %}<br>
+    		<input type="file" class="form-control" style="width: 18%; margin-left: 300px;" name="file" />
+    		<input type="submit" class="form-control"style="width: 18%; margin-left: 600px; margin-top: -42px;"value="提交" onclick="alert1()"/>
+          </form></div>
         <div class="card-body">
           <div class="table-responsive">
             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
@@ -430,15 +436,12 @@
     </div>
 
 
-
-
-
     <!-- /.container-fluid-->
     <!-- /.content-wrapper-->
     <footer class="sticky-footer">
       <div class="container">
         <div class="text-center">
-          <small>Copyright &copy; 2019.Company name All rights reserved.<a target="_blank" href="http://sc.chinaz.com/moban/">&#x7F51;&#x9875;&#x6A21;&#x677F;</a></small>
+          <small>Copyright &copy; 2019.Company name All rights reserved.</small>
         </div>
       </div>
     </footer>

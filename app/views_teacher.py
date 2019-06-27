@@ -202,3 +202,29 @@ def teacher_question(request):
 
 
     return HttpResponse('ok')
+
+#上传文件
+def teacher_upload_file(request):
+    user_email = request.session.get('email')
+    if Teacher_info.objects.get(teacher=User_info.objects.get(email=user_email)).project_1:
+        if request.method == 'POST':
+            file_obj = request.FILES.get('file')
+            if file_obj is None:
+                return redirect('/index_students/#table')
+            else:
+                isExists = os.path.exists('./app/temp_file/%s' % user_email)
+                if not isExists:
+                    os.makedirs('./app/temp_file/%s' % user_email)
+                file_path = os.path.join('app', 'temp_file', user_email, file_obj.name)
+                with open(file_path, 'wb+') as f:
+                    for chunk in file_obj.chunks():
+                        f.write(chunk)
+                fsize = os.path.getsize(file_path)
+                fobj = User_info.objects.get(email=user_email)
+                user_file_obj = student_file(email=fobj, student_file_name=file_obj.name, student_file_size=fsize,student_upload_add=file_path)
+                user_file_obj.save()
+                return redirect('/index_teachers/#table')
+        else:
+            return redirect('/index_teachers/#table')
+    else:
+        return HttpResponse("<script>alert('您没有项目，无法提交！');window.history.back();</script>")
